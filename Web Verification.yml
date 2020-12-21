@@ -27,6 +27,7 @@
     win_service:
       name: W3Svc
       state: started
+    when: os_type is match("windows.*")
     
   - name: Check that you can connect to the index page and that the hostname is in the contents
     win_uri:
