@@ -1,0 +1,38 @@
+- name: verify index page works
+  hosts: "{{ vm_name | default('all') }}"
+  gather_facts: false
+
+  collections:
+    - ansible.posix
+    ## will need to add back in ansible.windows collection
+
+  tasks:
+
+  - name: Ensure apache is running
+    service:
+      name: httpd
+      state: started
+    when: os_type is match("rhel.*")
+  
+  - name: Check that you can connect to the index page and that the hostname is in the contents
+    uri:
+      url: http://{{ ansible_host }}/index.html
+      validate_certs: no
+      return_content: yes
+    register: this
+    failed_when: "inventory_hostname not in this.content"
+    when: os_type is match("rhel.*")
+
+  - name: Ensure IIS is running
+    win_service:
+      name: W3Svc
+      state: started
+    
+  - name: Check that you can connect to the index page and that the hostname is in the contents
+    win_uri:
+      url: http://{{ ansible_host }}/index.html
+      validate_certs: no
+      return_content: yes
+    register: this
+    failed_when: "inventory_hostname not in this.content"
+    when: os_type is match("windows.*")
