@@ -1,0 +1,40 @@
+---
+- name: Open Firewalld for apache
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled 
+  notify: restart_firewalld
+
+- name: Open Firewalld for SSL
+  firewalld:
+    service: https
+    permanent: yes
+    state: enabled
+  notify: restart_firewalld
+
+- name: Add apache package for RHEL 7
+  yum:
+    name: httpd
+    state: latest
+  notify: httpd_running
+  when: os_type is match("rhel_7.*")
+  
+- name: Add apache package for RHEL 8
+  dnf:
+    name: httpd
+    state: latest
+  notify: httpd_running
+  when: os_type is match("rhel_8.*") 
+  
+- name: Insert webpage formatting for html
+  copy:
+    src: website/
+    dest: /var/www/html/
+
+- name: Insert Index Page for webpage
+  template:
+    src: templates/indexcomplex.html.j2
+    dest: /var/www/html/index.html
+  tags:
+    - updaterhel
