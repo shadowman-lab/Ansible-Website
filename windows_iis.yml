@@ -39,7 +39,7 @@
 
 - name: Bind Certificate
   win_command:
-    cmd /C cd %TEMP% && powershell.exe -ExecutionPolicy ByPass -File update-cert.ps1
+    'cmd /C cd %TEMP% && powershell.exe -ExecutionPolicy ByPass -File update-cert.ps1'
 
 - name: iis_running
   win_service:
