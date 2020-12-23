@@ -41,12 +41,7 @@
   win_command:
     cmd /C cd %TEMP% && powershell.exe -ExecutionPolicy ByPass -File update-cert.ps1
 
-- name: Configure site bindings
-  win_iis_webbinding:
-    name: 'Ansible Tower'
-    port: '443'
-    protocol: 'https'
-    certificate_store_name: 'Root'
-    certificate_hash: '{{ thumbprint.thumbprints[0] }}'
-    state: 'present'
-  notify: iis_running
+- name: iis_running
+  win_service:
+    name: W3Svc
+    state: restarted
