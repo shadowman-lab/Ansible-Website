@@ -18,8 +18,8 @@
 - name: install certificate 
   win_certificate_store:
     path: C:\Inetpub\wwwroot\certificate.pfx
+    file_type: pkcs12
     state: present
-    key_storage: machine
     password: "{{ windowspassword }}"
     store_name: Root
   register: thumbprint
