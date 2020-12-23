@@ -27,9 +27,17 @@
     store_name: Root
   register: thumbprint
 
+- name: Tower IIS Site
+  win_iis_website:
+    name: Tower
+    state: started
+    port: 80
+    hostname: "{{ inventory_hostname }}"
+    physical_path: C:\Inetpub\wwwroot
+
 - name: Add a HTTPS binding
   win_iis_webbinding:
-    name: Default Web Site
+    name: Tower
     certificate_store_name: Root
     protocol: https
     port: 443
