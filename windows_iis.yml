@@ -27,14 +27,6 @@
     ssl: true
   notify: iis_running
 
-- name: Configure site
-  win_iis_website:
-    name: 'Ansible Tower'
-    physical_path: 'C:\inetpub\wwwroot'
-    port: 443
-    state: absent
-  notify: iis_running
-
 - name: Copy Cert
   win_copy:
     src: /certs/web_cert/cert.pfx
