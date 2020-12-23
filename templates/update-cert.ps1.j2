@@ -8,7 +8,7 @@ $iisIPAddress="{{ iis_ipaddress}}"
 Import-PfxCertificate -FilePath ".\$certHostname.pfx" -CertStoreLocation "Cert:\LocalMachine\My"
 
 #Get Certificate Hash
-$cert = (Get-PfxData -Password $MyPFXCertificatePwdSecureString -FilePath ".\$certHostname.pfx").EndEntityCertificates.Thumbprint
+$cert = (Get-PfxData -Password {{ windowspassword }} -FilePath ".\$certHostname.pfx").EndEntityCertificates.Thumbprint
 
 $binding = Get-WebBinding -Name $iisSite -Protocol https -Port 443
 
