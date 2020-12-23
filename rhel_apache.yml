@@ -31,17 +31,17 @@
   notify: httpd_running
   when: os_type is match("rhel_8.*")
 
-- name: Copy cert
+- name: Copy website formatting
   copy:
     src: website/
     dest: /var/www/html/
 
-- name: Copy cert
+- name: Copy Cert
   copy:
     src: /certs/shadowman_cert.cer
     dest: /etc/pki/tls/certs/localhost.crt
   
-- name: Insert webpage formatting for html
+- name: Copy Key
   copy:
     src: /certs/shadowman_private.key
     dest: /etc/pki/tls/private/localhost.key
