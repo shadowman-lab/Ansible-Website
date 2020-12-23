@@ -26,7 +26,7 @@
 
 - name: Tower IIS Site
   win_iis_website:
-    name: Tower
+    name: "Tower SSL"
     state: started
     port: 443
     hostname: "{{ inventory_hostname }}"
@@ -34,7 +34,7 @@
 
 - name: Add a HTTPS binding
   win_iis_webbinding:
-    name: Tower
+    name: "Tower SSL"
     certificate_store_name: Root
     protocol: https
     port: 443
