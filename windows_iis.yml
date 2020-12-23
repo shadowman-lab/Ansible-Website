@@ -12,26 +12,22 @@
 
 - name: Copy Cert
   win_copy:
-    src: /certs/shadowman_cert.cer
-    dest: C:\Inetpub\wwwroot\web_cert.cer
-
-- name: Copy Key
-  win_copy:
-    src: /certs/shadowman_private.key
-    dest: C:\ProgramData\Microsoft\Crypto\RSA\MachineKeys\web_cert.key
+    src: /certs/certificate.pfx
+    dest: C:\Inetpub\wwwroot\certificate.pfx
 
 - name: install certificate 
   win_certificate_store:
-    path: C:\Inetpub\wwwroot\web_cert.cer
+    path: C:\Inetpub\wwwroot\certificate.pfx
     state: present
     key_storage: machine
+    password: "{{ windowspassword }}"
     store_name: Root
   register: thumbprint
 
 - name: Add a HTTPS binding
   win_iis_webbinding:
     name: Default Web Site
-    certificate_store_name: "Root"
+    certificate_store_name: Root
     protocol: https
     port: 443
     certificate_hash: "{{ thumbprint.thumbprints[0] }}"
