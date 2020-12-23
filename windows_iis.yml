@@ -24,6 +24,7 @@
   win_certificate_store:
     path: C:\Inetpub\wwwroot\web_cert.cer
     state: present
+    key_storage: machine
     store_name: Root
   register: thumbprint
 
