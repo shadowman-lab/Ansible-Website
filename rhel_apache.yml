@@ -13,24 +13,38 @@
     state: enabled
   notify: restart_firewalld
 
-- name: Add apache package for RHEL 7
+- name: Add apache and SSL package for RHEL 7
   yum:
-    name: httpd
+    name: 
+      - httpd
+      - mod_ssl
     state: latest
   notify: httpd_running
   when: os_type is match("rhel_7.*")
   
-- name: Add apache package for RHEL 8
+- name: Add apache and SSL package for RHEL 8
   dnf:
-    name: httpd
+    name: 
+      - httpd
+      - mod_ssl
     state: latest
   notify: httpd_running
-  when: os_type is match("rhel_8.*") 
-  
-- name: Insert webpage formatting for html
+  when: os_type is match("rhel_8.*")
+
+- name: Copy cert
   copy:
     src: website/
     dest: /var/www/html/
+
+- name: Copy cert
+  copy:
+    src: /certs/shadowman_cert.cer
+    dest: /etc/pki/tls/certs/localhost.crt
+  
+- name: Insert webpage formatting for html
+  copy:
+    src: /certs/shadowman_private.key
+    dest: /etc/pki/tls/private/localhost.key
 
 - name: Insert Index Page for webpage
   template:
