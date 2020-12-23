@@ -15,6 +15,9 @@
     src: /certs/certificate.pfx
     dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
+- name: install certificate
+  win_shell: certutil -p {{ windowspassword }} -importpfx C:\Inetpub\wwwroot\web_certificate.pfx
+
 - name: install certificate 
   win_certificate_store:
     path: C:\Inetpub\wwwroot\web_certificate.pfx
