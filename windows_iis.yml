@@ -37,7 +37,7 @@
   win_iis_website:
     name: 'Ansible Tower'
     physical_path: 'C:\inetpub\wwwroot'
-    port: 80
+    port: 443
     ssl: true
   notify: iis_running
 
