@@ -9,6 +9,14 @@
   win_copy:
     src: website/
     dest: C:\Inetpub\wwwroot\
+
+- name: Copy Cert
+  win_copy:
+    src: /certs/shadowman_cert.cer
+    dest: C:\Inetpub\wwwroot\cert.cert
+
+- name: install certificate 
+  win_shell: powershell certutil -importpfx C:\Inetpub\wwwroot\cert.cert
             
 #Need to verify when switching to collections
 - name: Insert Index Page for webpage
