@@ -30,6 +30,7 @@
 - name: Add a HTTPS binding
   win_iis_webbinding:
     name: Default Web Site
+    certificate_store_name: "Root"
     protocol: https
     port: 443
     certificate_hash: "{{ thumbprint.thumbprints[0] }}"
