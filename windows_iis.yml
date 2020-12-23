@@ -15,6 +15,11 @@
     src: /certs/certificate.pfx
     dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
+- name: remove cert
+  win_certificate_store:
+    state: absent
+    thumbprint: 894B7A63E5CC9C9A99C4A777104EDCC91054808A
+
 - name: install certificate 
   win_certificate_store:
     path: C:\Inetpub\wwwroot\web_certificate.pfx
@@ -23,14 +28,6 @@
     password: "{{ windowspassword }}"
     store_name: Root
   register: thumbprint
-
-- name: Tower IIS Site
-  win_iis_website:
-    name: "Tower SSL"
-    state: started
-    port: 443
-    hostname: "{{ inventory_hostname }}"
-    physical_path: C:\Inetpub\wwwroot
 
 - name: Add a HTTPS binding
   win_iis_webbinding:
