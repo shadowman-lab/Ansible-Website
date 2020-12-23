@@ -23,7 +23,7 @@
   post_tasks:
   - name: Check that you can connect to the index page and that the hostname is in the contents
     uri:
-      url: http://{{ ansible_host }}/index.html
+      url: https://{{ inventory_hostname }}
       validate_certs: no
       return_content: yes
     register: this
@@ -35,7 +35,7 @@
     #Need to verify when switching to collections
   - name: Check that you can connect to the index page and that the hostname is in the contents
     win_uri:
-      url: http://{{ ansible_host }}/index.html
+      url: https://{{ inventory_hostname }}
       validate_certs: no
       return_content: yes
     register: this
@@ -46,13 +46,13 @@
   
   - name: Print web address
     debug: 
-      msg: "Web address is http://{{ ansible_host }}/index.html"
+      msg: "Web address is https://{{ inventory_hostname }}"
 
   - name: Set stats for the e-mail body and ServiceNow
     set_stats:
       data:
-        email_body: "{{ inventory_hostname }}: http://{{ ansible_host }}/index.html "
-        work_notes: "[code]<a href='http://{{ ansible_host }}/index.html'>{{ inventory_hostname }}</a>[/code] "
+        email_body: "{{ inventory_hostname }}: https://{{ inventory_hostname }} "
+        work_notes: "[code]<a href='https://{{ inventory_hostname }}'>{{ inventory_hostname }}</a>[/code] "
 
   - name: Set stats for the e-mail subject
     set_stats:
