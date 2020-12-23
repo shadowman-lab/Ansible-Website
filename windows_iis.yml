@@ -27,21 +27,34 @@
     ssl: true
   notify: iis_running
 
+- name: Configure site
+  win_iis_website:
+    name: 'Ansible Tower'
+    physical_path: 'C:\inetpub\wwwroot'
+    port: 443
+    state: absent
+  notify: iis_running
+
 - name: Copy Cert
   win_copy:
     src: /certs/web_cert/cert.pfx
-    dest: "%TEMP%\\{{ cert_name }}.pfx"
+    dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
-- name: Copy Powershell Binding Template
-  win_template:
-    src: update-cert.ps1.j2
-    dest: "%TEMP%\\update-cert.ps1"
+- name: install certificate 
+  win_certificate_store:
+    path: C:\Inetpub\wwwroot\web_certificate.pfx
+    file_type: pkcs12
+    state: present
+    password: "{{ windowspassword }}"
+    store_name: Root
+  register: thumbprint
 
-- name: Bind Certificate
-  win_command:
-    'cmd /C cd %TEMP% && powershell.exe -ExecutionPolicy ByPass -File update-cert.ps1'
-
-- name: iis_running
-  win_service:
-    name: W3Svc
-    state: restarted
+- name: Configure site bindings
+  win_iis_webbinding:
+    name: 'Ansible Tower'
+    port: '443'
+    protocol: 'https'
+    certificate_store_name: 'Root'
+    certificate_hash: '{{ thumbprint.thumbprints[0] }}'
+    state: 'present'
+  notify: iis_running
