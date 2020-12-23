@@ -19,29 +19,29 @@
   tags:
     - updatewin   
 
-- name: Copy Cert
-  win_copy:
-    src: /certs/certificate.pfx
-    dest: C:\Inetpub\wwwroot\web_certificate.pfx
-
-- name: install certificate 
-  win_certificate_store:
-    path: C:\Inetpub\wwwroot\web_certificate.pfx
-    file_type: pkcs12
-    state: present
-    password: "{{ windowspassword }}"
-    store_name: Root
-  register: thumbprint
-
-- name: configure site
+- name: Configure site
   win_iis_website:
     name: 'Ansible Tower'
     physical_path: 'C:\inetpub\wwwroot'
-    port: 443
+    port: 80
     ssl: true
   notify: iis_running
 
-- name: configure site bindings
+- name: Copy Cert
+  win_copy:
+    src: /certs/web_cert/cert.pfx
+    dest: "%TEMP%\\{{ cert_name }}.pfx"
+
+- name: Copy Powershell Binding Template
+  win_template:
+    src: update-cert.ps1.j2
+    dest: "%TEMP%\\update-cert.ps1"
+
+- name: Bind Certificate
+  win_command:
+    cmd /C cd %TEMP% && powershell.exe -ExecutionPolicy ByPass -File update-cert.ps1
+
+- name: Configure site bindings
   win_iis_webbinding:
     name: 'Ansible Tower'
     port: '443'

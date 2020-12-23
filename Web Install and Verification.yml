@@ -2,6 +2,11 @@
   hosts: "{{ vm_name | default('all') }}"
   gather_facts: false
 
+  vars:
+    - cert_name: "web_cert"
+    - iis_site: "Ansible Tower"
+    - iis_ip: "{{ ansible_host }}"
+
   collections:
     - ansible.posix
     ## will need to add back in ansible.windows collection

@@ -1,0 +1,20 @@
+$ErrorActionPreference = 'SilentlyContinue'
+
+$certHostname="{{ cert_name }}"
+$iisSite="{{ iis_site }}"
+$iisIPAddress="{{ iis_ipaddress}}"
+
+#Import Certificate
+Import-PfxCertificate -FilePath ".\$certHostname.pfx" -CertStoreLocation "Cert:\LocalMachine\My"
+
+#Get Certificate Hash
+$cert = (Get-PfxData -Password $MyPFXCertificatePwdSecureString -FilePath ".\$certHostname.pfx").EndEntityCertificates.Thumbprint
+
+$binding = Get-WebBinding -Name $iisSite -Protocol https -Port 443
+
+if ($binding -eq $null) {
+    $binding = New-WebBinding -Name $iisSite -IPAddress $iisIPAddress -Protocol https -Port 443
+    $binding = Get-WebBinding -Name $iisSite -Protocol https -Port 443
+}
+
+$binding.AddSslCertificate($cert, "my")
