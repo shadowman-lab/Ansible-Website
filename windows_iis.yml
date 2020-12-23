@@ -26,7 +26,7 @@
     name: Default Web Site
     protocol: https
     port: 443
-    certificate_hash: "{{ thumprint.thumbprints[0] }}"
+    certificate_hash: "{{ thumbprint.thumbprints[0] }}"
     state: present
              
 #Need to verify when switching to collections
