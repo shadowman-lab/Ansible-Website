@@ -19,6 +19,7 @@
   win_certificate_store:
     path: C:\Inetpub\wwwroot\cert.cert
     state: present
+    store_name: TrustedPublisher
   register: thumbprint
 
 - name: Add a HTTPS binding
