@@ -27,7 +27,7 @@
 
 - name: Copy Cert
   win_copy:
-    src: /certs/web_cert/cert.pfx
+    src: /certs/certificate.pfx
     dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
 - name: install certificate 
