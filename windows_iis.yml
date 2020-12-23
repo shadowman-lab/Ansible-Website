@@ -13,12 +13,12 @@
 - name: Copy Cert
   win_copy:
     src: /certs/shadowman_cert.cer
-    dest: C:\Inetpub\wwwroot\cert.cer
+    dest: C:\Inetpub\wwwroot\web_cert.cer
 
 - name: Copy Key
   win_copy:
     src: /certs/shadowman_private.key
-    dest: C:\ProgramData\Microsoft\Crypto\RSA\MachineKeys
+    dest: C:\ProgramData\Microsoft\Crypto\RSA\MachineKeys\web_cert.key
 
 - name: install certificate 
   win_certificate_store:
