@@ -5,7 +5,7 @@
   vars:
     - cert_name: "web_cert"
     - iis_site: "Ansible Tower"
-    - iis_ip: "{{ ansible_host }}"
+    - iis_ipaddress: "{{ ansible_host }}"
 
   collections:
     - ansible.posix
