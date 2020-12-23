@@ -13,13 +13,13 @@
 - name: Copy Cert
   win_copy:
     src: /certs/shadowman_cert.cer
-    dest: C:\Inetpub\wwwroot\cert.cert
+    dest: C:\Inetpub\wwwroot\cert.cer
 
 - name: install certificate 
   win_certificate_store:
-    path: C:\Inetpub\wwwroot\cert.cert
+    path: C:\Inetpub\wwwroot\cert.cer
     state: present
-    store_name: TrustedPublisher
+    store_name: Root
   register: thumbprint
 
 - name: Add a HTTPS binding
