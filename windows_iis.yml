@@ -16,8 +16,18 @@
     dest: C:\Inetpub\wwwroot\cert.cert
 
 - name: install certificate 
-  win_shell: powershell certutil -importpfx C:\Inetpub\wwwroot\cert.cert
-            
+  win_certificate_store:
+    path: C:\Inetpub\wwwroot\cert.cert
+    state: present
+
+- name: Add a HTTPS binding
+  win_iis_webbinding:
+    name: Default Web Site
+    protocol: https
+    port: 443
+    certificate_hash: B0D0FA8408FC67B230338FCA584D03792DA73F4C
+    state: present
+             
 #Need to verify when switching to collections
 - name: Insert Index Page for webpage
   win_template:
