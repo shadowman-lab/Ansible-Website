@@ -19,18 +19,19 @@
   tags:
     - updatewin   
 
-- name: Configure site
+- name: Remove Default Site
   win_iis_website:
-    name: 'Ansible Tower'
-    physical_path: 'C:\inetpub\wwwroot'
-    port: 80
-    ssl: true
-  notify: iis_running
+    name: 'Default Web Site'
+    state: absent
 
 - name: Configure site
   win_iis_website:
     name: 'Ansible Tower'
+    physical_path: 'C:\inetpub\wwwroot'
     state: started
+    port: 80
+    ssl: true
+  notify: iis_running
 
 - name: Copy Cert
   win_copy:
