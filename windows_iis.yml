@@ -2,7 +2,7 @@
 - name: install iis
   win_feature:
     name: Web-Server
-    state: present
+    state: absent
   notify: iis_running
 
 - name: Insert webpage formatting
