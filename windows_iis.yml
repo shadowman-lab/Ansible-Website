@@ -4,7 +4,9 @@
     name: Web-Server
     state: present
   notify: iis_running
-
+  register: result
+  ignore_errors: true
+  
 - name: Insert webpage formatting
   win_copy:
     src: website/
