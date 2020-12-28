@@ -27,6 +27,11 @@
     ssl: true
   notify: iis_running
 
+- name: Configure site
+  win_iis_website:
+    name: 'Ansible Tower'
+    state: started
+
 - name: Copy Cert
   win_copy:
     src: /certs/certificate.pfx
