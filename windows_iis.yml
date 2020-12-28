@@ -19,11 +19,6 @@
   tags:
     - updatewin   
 
-- name: Remove site
-  win_iis_website:
-    name: 'Ansible Tower'
-    state: absent
-
 - name: Configure site
   win_iis_website:
     name: 'Ansible Tower'
