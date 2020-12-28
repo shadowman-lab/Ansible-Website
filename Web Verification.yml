@@ -11,7 +11,7 @@
   - name: Ensure apache is running
     service:
       name: httpd
-      state: started
+      state: restarted
     when: os_type is match("rhel.*")
   
   - name: Check that you can connect to the index page and that the hostname is in the contents
@@ -26,7 +26,7 @@
   - name: Ensure IIS is running
     win_service:
       name: W3Svc
-      state: started
+      state: restarted
     when: os_type is match("windows.*")
     
   - name: Check that you can connect to the index page and that the hostname is in the contents
