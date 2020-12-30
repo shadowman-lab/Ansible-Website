@@ -1,25 +1,45 @@
 ---
 - name: install iis
-  win_feature:
-    name: Web-Server
-    state: present
-  notify: iis_running
-  register: result
-  ignore_errors: true
+  block:
+    - name: install iis
+      win_feature:
+        name: Web-Server
+        state: present
+      notify: iis_running
+  rescue:
+    - name: install iis twice due to WINRM issues
+      win_feature:
+        name: Web-Server
+        state: present
+      notify: iis_running
   
 - name: Insert webpage formatting
-  win_copy:
-    src: website/
-    dest: C:\Inetpub\wwwroot\
-  ignore_errors: true
+  block:
+    - name: Insert webpage formatting
+      win_copy:
+        src: website/
+        dest: C:\Inetpub\wwwroot\
+  rescue:
+    - name: Insert webpage formatting twice due to WINRM issues
+      win_copy:
+        src: website/
+        dest: C:\Inetpub\wwwroot\
 
 - name: Insert Index Page for webpage
-  win_template:
-    src: templates/indexcomplex.html.j2
-    dest: C:\Inetpub\wwwroot\index.html
-  ignore_errors: true
-  tags:
-    - updatewin   
+  block:
+    - name: Insert Index Page for webpage
+      win_template:
+        src: templates/indexcomplex.html.j2
+        dest: C:\Inetpub\wwwroot\index.html
+      tags:
+        - updatewin   
+  rescue:
+    - name: Insert Index Page for webpage twice due to WINRM issues
+      win_template:
+        src: templates/indexcomplex.html.j2
+        dest: C:\Inetpub\wwwroot\index.html
+      tags:
+        - updatewin   
 
 - name: Remove Default Site
   win_iis_website:
@@ -36,10 +56,16 @@
   notify: iis_running
 
 - name: Copy Cert
-  win_copy:
-    src: /certs/certificate.pfx
-    dest: C:\Inetpub\wwwroot\web_certificate.pfx
-  ignore_errors: true
+  block:
+    - name: Copy Cert
+      win_copy:
+        src: /certs/certificate.pfx
+        dest: C:\Inetpub\wwwroot\web_certificate.pfx
+  rescue:
+    - name: Copy Cert Twice due to WINRM issues
+      win_copy:
+        src: /certs/certificate.pfx
+        dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
 - name: install certificate 
   win_certificate_store:
