@@ -11,11 +11,13 @@
   win_copy:
     src: website/
     dest: C:\Inetpub\wwwroot\
+  ignore_errors: true
 
 - name: Insert Index Page for webpage
   win_template:
     src: templates/indexcomplex.html.j2
     dest: C:\Inetpub\wwwroot\index.html
+  ignore_errors: true
   tags:
     - updatewin   
 
@@ -37,6 +39,7 @@
   win_copy:
     src: /certs/certificate.pfx
     dest: C:\Inetpub\wwwroot\web_certificate.pfx
+  ignore_errors: true
 
 - name: install certificate 
   win_certificate_store:
