@@ -5,6 +5,7 @@
       win_feature:
         name: Web-Server
         state: present
+      any_errors_fatal: true
       notify: iis_running
   rescue:
     - name: install iis twice due to WINRM issues
@@ -19,6 +20,7 @@
       win_copy:
         src: website/
         dest: C:\Inetpub\wwwroot\
+      any_errors_fatal: true
   rescue:
     - name: Insert webpage formatting twice due to WINRM issues
       win_copy:
@@ -31,6 +33,7 @@
       win_template:
         src: templates/indexcomplex.html.j2
         dest: C:\Inetpub\wwwroot\index.html
+      any_errors_fatal: true
       tags:
         - updatewin   
   rescue:
@@ -61,6 +64,7 @@
       win_copy:
         src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
+      any_errors_fatal: true
   rescue:
     - name: Copy Cert Twice due to WINRM issues
       win_copy:
