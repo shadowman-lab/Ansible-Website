@@ -58,7 +58,7 @@
     set_stats:
       data:
         email_subject: "Ansible VM Web Link"
-      aggregate: no
+    run_once: true
 
   handlers:
     - name: httpd_running
