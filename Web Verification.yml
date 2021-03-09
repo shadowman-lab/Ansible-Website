@@ -12,7 +12,7 @@
     service:
       name: httpd
       state: started
-    when: os_type is match("rhel.*")
+    when: os is match("rhel.*")
   
   - name: Check that you can connect to the index page and that the hostname is in the contents
     uri:
@@ -21,13 +21,13 @@
       return_content: yes
     register: this
     failed_when: "inventory_hostname not in this.content"
-    when: os_type is match("rhel.*")
+    when: os is match("rhel.*")
 
   - name: Ensure IIS is running
     win_service:
       name: W3Svc
       state: started
-    when: os_type is match("windows.*")
+    when: os is match("windows.*")
     
   - name: Check that you can connect to the index page and that the hostname is in the contents
     win_uri:
@@ -36,4 +36,4 @@
       return_content: yes
     register: this
     failed_when: "inventory_hostname not in this.content"
-    when: os_type is match("windows.*")
+    when: os is match("windows.*")
