@@ -20,7 +20,7 @@
       - mod_ssl
     state: latest
   notify: httpd_running
-  when: os_type is match("rhel_7.*")
+  when: os is match("rhel_7.*")
   
 - name: Add apache and SSL package for RHEL 8
   dnf:
@@ -29,7 +29,7 @@
       - mod_ssl
     state: latest
   notify: httpd_running
-  when: os_type is match("rhel_8.*")
+  when: os is match("rhel_8.*")
 
 - name: Copy website formatting
   copy:
