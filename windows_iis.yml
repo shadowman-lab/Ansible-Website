@@ -42,18 +42,36 @@
         - updatewin   
 
 - name: Remove Default Site
-  win_iis_website:
-    name: 'Default Web Site'
-    state: absent
+  block:
+    - name: Remove Default Site
+      win_iis_website:
+        name: 'Default Web Site'
+        state: absent
+  rescue:
+    - name: Remove Default Site again due to WINRM
+      win_iis_website:
+        name: 'Default Web Site'
+        state: absent
 
 - name: Configure site
-  win_iis_website:
-    name: 'Ansible Tower'
-    physical_path: 'C:\inetpub\wwwroot'
-    state: started
-    port: 80
-    ssl: true
-  notify: iis_running
+  block:
+    - name: Configure site
+      win_iis_website:
+        name: 'Ansible Tower'
+        physical_path: 'C:\inetpub\wwwroot'
+        state: started
+        port: 80
+        ssl: true
+      notify: iis_running
+  rescue:
+    - name: Configure site twice due to WinRM
+      win_iis_website:
+        name: 'Ansible Tower'
+        physical_path: 'C:\inetpub\wwwroot'
+        state: started
+        port: 80
+        ssl: true
+      notify: iis_running
 
 - name: Copy Cert
   block:
@@ -67,21 +85,44 @@
         src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
-- name: install certificate 
-  win_certificate_store:
-    path: C:\Inetpub\wwwroot\web_certificate.pfx
-    file_type: pkcs12
-    state: present
-    password: "{{ windowspassword }}"
-    store_location: LocalMachine
-    key_storage: machine
-  register: thumbprint
+- name: Install Cert
+  block:
+    - name: install certificate 
+      win_certificate_store:
+        path: C:\Inetpub\wwwroot\web_certificate.pfx
+        file_type: pkcs12
+        state: present
+        password: "{{ windowspassword }}"
+        store_location: LocalMachine
+        key_storage: machine
+      register: thumbprint
+  rescue:
+    - name: install certificate twice due to WinRM
+      win_certificate_store:
+        path: C:\Inetpub\wwwroot\web_certificate.pfx
+        file_type: pkcs12
+        state: present
+        password: "{{ windowspassword }}"
+        store_location: LocalMachine
+        key_storage: machine
+      register: thumbprint
 
-- name: Configure site bindings
-  win_iis_webbinding:
-    name: 'Ansible Tower'
-    port: '443'
-    protocol: 'https'
-    certificate_hash: '{{ thumbprint.thumbprints[0] }}'
-    state: 'present'
-  notify: iis_running
+- name: Configure bindings
+  block:
+    - name: Configure site bindings
+      win_iis_webbinding:
+        name: 'Ansible Tower'
+        port: '443'
+        protocol: 'https'
+        certificate_hash: '{{ thumbprint.thumbprints[0] }}'
+        state: 'present'
+      notify: iis_running
+  rescue:
+    - name: Configure site bindings twice due to WINRM issues
+      win_iis_webbinding:
+        name: 'Ansible Tower'
+        port: '443'
+        protocol: 'https'
+        certificate_hash: '{{ thumbprint.thumbprints[0] }}'
+        state: 'present'
+      notify: iis_running
