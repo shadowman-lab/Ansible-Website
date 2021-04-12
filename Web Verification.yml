@@ -8,10 +8,11 @@
 
   tasks:
 
-  - name: Ensure apache is running
+  - name: Ensure apache is running and enabled
     service:
       name: httpd
       state: started
+      enabled: yes
     when: os is match("rhel.*")
   
   - name: Check that you can connect to the index page and that the hostname is in the contents
