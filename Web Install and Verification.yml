@@ -53,6 +53,7 @@
       data:
         email_body: "{{ fqdn }}: https://{{ fqdn }} "
         work_notes: "[code]<a href='https://{{ fqdn }}'>{{ fqdn }}</a>[/code] "
+        expose_to_cloud_redhat_com_results: "{{ fqdn }}: https://{{ fqdn }}"
 
   - name: Set stats for the e-mail subject
     set_stats:
