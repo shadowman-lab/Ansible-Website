@@ -34,7 +34,7 @@
     
     #Need to verify when switching to collections
   - name: Check that you can connect to the index page and that the hostname is in the contents
-    win_uri:
+    ansible.windows.win_uri:
       url: https://{{ fqdn }}
       validate_certs: no
       return_content: yes
@@ -68,7 +68,7 @@
         state: started
         
     - name: iis_running
-      win_service:
+      ansible.windows.win_service:
         name: W3Svc
         state: started
 

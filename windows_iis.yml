@@ -2,13 +2,13 @@
 - name: install iis
   block:
     - name: install iis
-      win_feature:
+      ansible.windows.win_feature:
         name: Web-Server
         state: present
       notify: iis_running
   rescue:
     - name: Retry iis due to WINRM issues
-      win_feature:
+      ansible.windows.win_feature:
         name: Web-Server
         state: present
       notify: iis_running
@@ -16,26 +16,26 @@
 - name: Insert webpage formatting
   block:
     - name: Insert webpage formatting
-      win_copy:
+      ansible.windows.win_copy:
         src: website/
         dest: C:\Inetpub\wwwroot\
   rescue:
     - name: Retry webpage formatting due to WINRM issues
-      win_copy:
+      ansible.windows.win_copy:
         src: website/
         dest: C:\Inetpub\wwwroot\
 
 - name: Insert Index Page for webpage
   block:
     - name: Insert Index Page for webpage
-      win_template:
+      ansible.windows.win_template:
         src: templates/indexcomplex.html.j2
         dest: C:\Inetpub\wwwroot\index.html
       tags:
         - updatewin   
   rescue:
     - name: Retry Index Page for webpage due to WINRM issues
-      win_template:
+      ansible.windows.win_template:
         src: templates/indexcomplex.html.j2
         dest: C:\Inetpub\wwwroot\index.html
       tags:
@@ -44,19 +44,19 @@
 - name: Remove Default Site
   block:
     - name: Remove Default Site
-      win_iis_website:
+      community.windows.win_iis_website:
         name: 'Default Web Site'
         state: absent
   rescue:
     - name: Remove Default Site again due to WINRM
-      win_iis_website:
+      community.windows.win_iis_website:
         name: 'Default Web Site'
         state: absent
 
 - name: Configure site
   block:
     - name: Configure site
-      win_iis_website:
+      community.windows.win_iis_website:
         name: 'Ansible Tower'
         physical_path: 'C:\inetpub\wwwroot'
         state: started
@@ -65,7 +65,7 @@
       notify: iis_running
   rescue:
     - name: Configure site twice due to WinRM
-      win_iis_website:
+      community.windows.win_iis_website:
         name: 'Ansible Tower'
         physical_path: 'C:\inetpub\wwwroot'
         state: started
@@ -76,19 +76,19 @@
 - name: Copy Cert
   block:
     - name: Copy Cert
-      win_copy:
+      ansible.windows.win_copy:
         src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
   rescue:
     - name: Retry Copy Cert due to WINRM issues
-      win_copy:
+      ansible.windows.win_copy:
         src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
 - name: Install Cert
   block:
     - name: install certificate 
-      win_certificate_store:
+      ansible.windows.win_certificate_store:
         path: C:\Inetpub\wwwroot\web_certificate.pfx
         file_type: pkcs12
         state: present
@@ -98,7 +98,7 @@
       register: thumbprint
   rescue:
     - name: install certificate twice due to WinRM
-      win_certificate_store:
+      ansible.windows.win_certificate_store:
         path: C:\Inetpub\wwwroot\web_certificate.pfx
         file_type: pkcs12
         state: present
@@ -110,7 +110,7 @@
 - name: Configure bindings
   block:
     - name: Configure site bindings
-      win_iis_webbinding:
+      community.windows.win_iis_webbinding:
         name: 'Ansible Tower'
         port: '443'
         protocol: 'https'
@@ -119,7 +119,7 @@
       notify: iis_running
   rescue:
     - name: Configure site bindings twice due to WINRM issues
-      win_iis_webbinding:
+      community.windows.win_iis_webbinding:
         name: 'Ansible Tower'
         port: '443'
         protocol: 'https'
