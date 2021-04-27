@@ -34,11 +34,12 @@
     
     #Need to verify when switching to collections
   - name: Check that you can connect to the index page and that the hostname is in the contents
-    ansible.windows.win_uri:
+    win_uri:
       url: https://{{ fqdn }}
       validate_certs: no
       return_content: yes
     register: this
+    failed_when: "inventory_hostname not in this.content"
     when: os is match("windows.*")
     tags:
       - updatewin
