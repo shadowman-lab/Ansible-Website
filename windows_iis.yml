@@ -28,14 +28,14 @@
 - name: Insert Index Page for webpage
   block:
     - name: Insert Index Page for webpage
-      ansible.windows.win_template:
+      win_template:
         src: templates/indexcomplex.html.j2
         dest: C:\Inetpub\wwwroot\index.html
       tags:
         - updatewin   
   rescue:
     - name: Retry Index Page for webpage due to WINRM issues
-      ansible.windows.win_template:
+      win_template:
         src: templates/indexcomplex.html.j2
         dest: C:\Inetpub\wwwroot\index.html
       tags:
