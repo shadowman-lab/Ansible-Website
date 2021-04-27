@@ -4,7 +4,6 @@
 
   collections:
     - ansible.posix
-    ## will need to add back in ansible.windows collection
 
   tasks:
 
@@ -30,6 +29,7 @@
       state: started
     when: os is match("windows.*")
     
+  #Need to verify when switching to Ansible 2.11
   - name: Check that you can connect to the index page and that the hostname is in the contents
     win_uri:
       url: http://{{ ansible_host }}/index.html
