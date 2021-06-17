@@ -14,7 +14,7 @@
   notify: restart_firewalld
 
 - name: Add apache and SSL package for RHEL 7
-  yum:
+  ansible.builtin.yum:
     name: 
       - httpd
       - mod_ssl
@@ -23,7 +23,7 @@
   when: os is match("rhel_7.*") or os is match ("rhel7.*")
   
 - name: Add apache and SSL package for RHEL 8
-  dnf:
+  ansible.builtin.dnf:
     name: 
       - httpd
       - mod_ssl
@@ -32,22 +32,22 @@
   when: os is match("rhel_8.*") or os is match ("rhel8.*")
 
 - name: Copy website formatting
-  copy:
+  ansible.builtin.copy:
     src: website/
     dest: /var/www/html/
 
 - name: Copy Cert
-  copy:
+  ansible.builtin.copy:
     src: /certs/shadowman_cert.cer
     dest: /etc/pki/tls/certs/localhost.crt
   
 - name: Copy Key
-  copy:
+  ansible.builtin.copy:
     src: /certs/shadowman_private.key
     dest: /etc/pki/tls/private/localhost.key
 
 - name: Insert Index Page for webpage
-  template:
+  ansible.builtin.template:
     src: templates/indexcomplex.html.j2
     dest: /var/www/html/index.html
   tags:

@@ -9,20 +9,20 @@
   tasks:
   
   - name: RHEL Apache config
-    include_tasks: rhel_apache.yml
+    ansible.builtin.include_tasks: rhel_apache.yml
     when: os is match("rhel.*")
     tags:
       - updaterhel
       
   - name: Windows IIS config
-    include_tasks: windows_iis.yml
+    ansible.builtin.include_tasks: windows_iis.yml
     when: os is match("windows.*")
     tags:
       - updatewin
       
   post_tasks:
   - name: Check that you can connect to the index page and that the hostname is in the contents
-    uri:
+    ansible.builtin.uri:
       url: https://{{ fqdn }}
       validate_certs: no
       return_content: yes
@@ -45,25 +45,25 @@
       - updatewin
   
   - name: Print web address
-    debug: 
+    ansible.builtin.debug: 
       msg: "Web address is https://{{ fqdn }}"
 
   - name: Set stats for the e-mail body and ServiceNow
-    set_stats:
+    ansible.builtin.set_stats:
       data:
         email_body: "{{ fqdn }}: https://{{ fqdn }} "
         work_notes: "[code]<a href='https://{{ fqdn }}'>{{ fqdn }}</a>[/code] "
         expose_to_cloud_redhat_com_results: "{{ fqdn }}: https://{{ fqdn }}"
 
   - name: Set stats for the e-mail subject
-    set_stats:
+    ansible.builtin.set_stats:
       data:
         email_subject: "Ansible VM Web Link"
     run_once: true
 
   handlers:
     - name: httpd_running
-      service:
+      ansible.builtin.service:
         name: httpd
         state: started
         
@@ -73,6 +73,6 @@
         state: started
 
     - name: restart_firewalld
-      service:
+      ansible.builtin.service:
         name: firewalld
         state: restarted

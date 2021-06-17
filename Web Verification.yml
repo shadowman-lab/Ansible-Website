@@ -8,14 +8,14 @@
   tasks:
 
   - name: Ensure apache is running and enabled
-    service:
+    ansible.builtin.service:
       name: httpd
       state: started
       enabled: yes
     when: os is match("rhel.*")
   
   - name: Check that you can connect to the index page and that the hostname is in the contents
-    uri:
+    ansible.builtin.uri:
       url: http://{{ ansible_host }}/index.html
       validate_certs: no
       return_content: yes
