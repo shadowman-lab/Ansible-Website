@@ -25,7 +25,7 @@
         src: website/
         dest: C:\Inetpub\wwwroot\
 
-#Need to verify when switching to Ansible 2.11
+#Change when switching to Ansible 2.11
 - name: Insert Index Page for webpage
   block:
     - name: Insert Index Page for webpage
