@@ -1,0 +1,77 @@
+- name: Install web server, insert an index page, verify service is started and that the index page works
+  hosts: "{{ vm_name | default('all') }}"
+  gather_facts: false
+
+  collections:
+    - ansible.posix
+    
+
+  tasks:
+  
+  - name: RHEL Apache config
+    ansible.builtin.include_tasks: rhel_apache.yml
+    when: os is match("rhel.*")
+    tags:
+      - updaterhel
+      
+  - name: Windows IIS config
+    ansible.builtin.include_tasks: windows_iis_collections.yml
+    when: os is match("windows.*")
+    tags:
+      - updatewin
+      
+  post_tasks:
+  - name: Check that you can connect to the index page and that the hostname is in the contents
+    ansible.builtin.uri:
+      url: https://{{ fqdn }}
+      validate_certs: no
+      return_content: yes
+    register: this
+    failed_when: "inventory_hostname not in this.content"
+    when: os is match("rhel.*")
+    tags:
+      - updaterhel
+    
+  - name: Check that you can connect to the index page and that the hostname is in the contents
+    ansible.windows.win_uri:
+      url: https://{{ fqdn }}
+      validate_certs: no
+      return_content: yes
+    register: this
+    failed_when: "inventory_hostname not in this.content"
+    when: os is match("windows.*")
+    tags:
+      - updatewin
+  
+  - name: Print web address
+    ansible.builtin.debug: 
+      msg: "Web address is https://{{ fqdn }}"
+
+  - name: Set stats for the e-mail body and ServiceNow
+    ansible.builtin.set_stats:
+      data:
+        email_body: "{{ fqdn }}: https://{{ fqdn }} "
+        work_notes: "[code]<a href='https://{{ fqdn }}'>{{ fqdn }}</a>[/code] "
+        expose_to_cloud_redhat_com_results: "{{ fqdn }}: https://{{ fqdn }}"
+
+  - name: Set stats for the e-mail subject
+    ansible.builtin.set_stats:
+      data:
+        email_subject: "Ansible VM Web Link"
+    run_once: true
+
+  handlers:
+    - name: httpd_running
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        
+    - name: iis_running
+      ansible.windows.win_service:
+        name: W3Svc
+        state: started
+
+    - name: restart_firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: restarted
