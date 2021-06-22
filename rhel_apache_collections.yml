@@ -36,18 +36,6 @@
     src: website/
     dest: /var/www/html/
 
-- name: Copy Cert
-  ansible.builtin.copy:
-    src: /certs/shadowman_cert.cer
-    dest: /etc/pki/tls/certs/localhost.crt
-  delegate_to: tower.shadowman.dev
-  
-- name: Copy Key
-  ansible.builtin.copy:
-    src: /certs/shadowman_private.key
-    dest: /etc/pki/tls/private/localhost.key
-  delegate_to: tower.shadowman.dev
-
 - name: Insert Index Page for webpage
   ansible.builtin.template:
     src: templates/indexcomplex.html.j2
