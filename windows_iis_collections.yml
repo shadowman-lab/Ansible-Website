@@ -72,3 +72,21 @@
         port: 443
         ssl: true
       notify: iis_running
+
+- name: Configure bindings
+  block:
+    - name: Configure site bindings
+      community.windows.win_iis_webbinding:
+        name: 'Ansible Tower'
+        port: '443'
+        protocol: 'https'
+        state: 'present'
+      notify: iis_running
+  rescue:
+    - name: Configure site bindings twice due to WINRM issues
+      community.windows.win_iis_webbinding:
+        name: 'Ansible Tower'
+        port: '443'
+        protocol: 'https'
+        state: 'present'
+      notify: iis_running
