@@ -60,7 +60,7 @@
         name: 'Ansible Tower'
         physical_path: 'C:\inetpub\wwwroot'
         state: started
-        port: 443
+        port: 80
         ssl: true
       notify: iis_running
   rescue:
@@ -69,7 +69,7 @@
         name: 'Ansible Tower'
         physical_path: 'C:\inetpub\wwwroot'
         state: started
-        port: 443
+        port: 80
         ssl: true
       notify: iis_running
 
