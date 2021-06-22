@@ -77,13 +77,15 @@
   block:
     - name: Copy Cert
       ansible.windows.win_copy:
-        remote_src: /certs/certificate.pfx
+        remote_src: yes
+        src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
       delegate_to: aap.shadowman.dev
   rescue:
     - name: Retry Copy Cert due to WINRM issues
       ansible.windows.win_copy:
-        remote_src: /certs/certificate.pfx
+        remote_src: yes
+        src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
       delegate_to: aap.shadowman.dev
 
