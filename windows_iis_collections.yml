@@ -79,13 +79,11 @@
       ansible.windows.win_copy:
         src: C:\Inetpub\wwwroot\web_certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
-      delegate_to: win2016.ad.shadowman.dev
   rescue:
     - name: Retry Copy Cert due to WINRM issues
       ansible.windows.win_copy:
         src: C:\Inetpub\wwwroot\web_certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
-      delegate_to: win2016.ad.shadowman.dev
 
 - name: Install Cert
   block:
