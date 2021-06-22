@@ -77,12 +77,12 @@
   block:
     - name: Copy Cert
       ansible.windows.win_copy:
-        src: /certs/certificate.pfx
+        src: /home/certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
   rescue:
     - name: Retry Copy Cert due to WINRM issues
       ansible.windows.win_copy:
-        src: /certs/certificate.pfx
+        src: /home/certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
 - name: Install Cert
