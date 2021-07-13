@@ -6,3 +6,5 @@
 
 - include_tasks: windows_iis.yml
   when: os is match("windows.*")
+  tags:
+      - updatewin

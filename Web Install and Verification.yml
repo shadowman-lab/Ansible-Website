@@ -7,22 +7,16 @@
   - name: RHEL Apache config
     ansible.builtin.include_role: 
       name: webservers
-      apply:
-        tags:
-          - updaterhel
     when: os is match("rhel.*")
     tags:
-      - updaterhel
+      - always
       
   - name: Windows IIS config
     ansible.builtin.include_role:
       name: webservers
-      apply:
-        tags:
-          - updatewin
     when: os is match("windows.*")
     tags:
-      - updatewin
+      - always
       
   post_tasks:
   - name: Check that you can connect to the index page and that the hostname is in the contents
