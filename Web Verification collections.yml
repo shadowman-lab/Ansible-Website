@@ -2,37 +2,5 @@
   hosts: "{{ vm_name | default('all') }}"
   gather_facts: false
 
-  collections:
-    - ansible.posix
-
-  tasks:
-
-  - name: Ensure apache is running and enabled
-    ansible.builtin.service:
-      name: httpd
-      state: started
-      enabled: yes
-    when: os is match("rhel.*")
-  
-  - name: Check that you can connect to the index page and that the hostname is in the contents
-    ansible.builtin.uri:
-      url: http://{{ ansible_host }}/index.html
-      validate_certs: no
-      return_content: yes
-    register: this
-    failed_when: "inventory_hostname not in this.content"
-    when: os is match("rhel.*")
-
-  - name: Ensure IIS is running
-    ansible.windows.win_service:
-      name: W3Svc
-      state: started
-    when: os is match("windows.*")
-    
-  - name: Check that you can connect to the index page and that the hostname is in the contents
-    ansible.windows.win_uri:
-      url: http://{{ ansible_host }}/index.html
-      validate_certs: no
-      return_content: yes
-    register: this
-    when: os is match("windows.*")
+    roles:
+    - verification_collection

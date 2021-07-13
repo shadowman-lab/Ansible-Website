@@ -2,20 +2,24 @@
   hosts: "{{ vm_name | default('all') }}"
   gather_facts: false
 
-  collections:
-    - ansible.posix
-    
-
   tasks:
   
   - name: RHEL Apache config
-    ansible.builtin.include_tasks: rhel_apache_collections.yml
+    ansible.builtin.include_role: 
+      name: webservers_collection
+      apply:
+        tags:
+          - updaterhel
     when: os is match("rhel.*")
     tags:
       - updaterhel
       
   - name: Windows IIS config
-    ansible.builtin.include_tasks: windows_iis_collections.yml
+    ansible.builtin.include_tasks:
+      name: webservers_collection
+      apply:
+        tags:
+          - updatewin
     when: os is match("windows.*")
     tags:
       - updatewin
@@ -59,19 +63,3 @@
       data:
         email_subject: "Ansible VM Web Link"
     run_once: true
-
-  handlers:
-    - name: httpd_running
-      ansible.builtin.service:
-        name: httpd
-        state: started
-        
-    - name: iis_running
-      ansible.windows.win_service:
-        name: W3Svc
-        state: started
-
-    - name: restart_firewalld
-      ansible.builtin.service:
-        name: firewalld
-        state: restarted

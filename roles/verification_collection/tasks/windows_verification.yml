@@ -1,0 +1,13 @@
+- name: Ensure IIS is running
+  ansible.windows.win_service:
+    name: W3Svc
+    state: started
+  when: os is match("windows.*")
+  
+- name: Check that you can connect to the index page and that the hostname is in the contents
+  ansible.windows.win_uri:
+    url: http://{{ ansible_host }}/index.html
+    validate_certs: no
+    return_content: yes
+  register: this
+  when: os is match("windows.*")
