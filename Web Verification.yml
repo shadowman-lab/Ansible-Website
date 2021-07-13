@@ -2,5 +2,5 @@
   hosts: "{{ vm_name | default('all') }}"
   gather_facts: false
 
-    roles:
+  roles:
     - verification
