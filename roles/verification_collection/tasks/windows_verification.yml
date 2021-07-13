@@ -1,3 +1,4 @@
+---
 - name: Ensure IIS is running
   ansible.windows.win_service:
     name: W3Svc
