@@ -15,7 +15,7 @@
       - updaterhel
       
   - name: Windows IIS config
-    ansible.builtin.include_tasks:
+    ansible.builtin.include_role:
       name: webservers
       apply:
         tags:
