@@ -1,4 +1,18 @@
 ---
+- name: Update Azure Security
+  azure_rm_securitygroup:
+  resource_group: Demo
+  name: "{{ security_group }}"
+  rules:
+      - name: AllowHTTPANDHTTPS
+        protocol: Any
+        source_address_prefix: Any
+        destination_port_range: 80,443
+        access: Allow
+        priority: 102
+        direction: Inbound
+  when: shadowman_provision_hypervisor|default("RHV") == "Azure"
+
 - include_tasks: rhel_apache_collections.yml
   when: os is match("rhel.*")
   tags:
