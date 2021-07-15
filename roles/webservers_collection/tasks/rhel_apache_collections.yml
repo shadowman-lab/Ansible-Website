@@ -36,17 +36,23 @@
     src: website/
     dest: /var/www/html/
 
-- name: Copy Cert
-  ansible.builtin.synchronize:
-    src: /tmp/certs/shadowman_cert.cer
-    dest: /etc/pki/tls/certs/localhost.crt
-    mode: push
+- name: Fetch cert
+  ansible.builtin.fetch:
+    src: /certs/shadowman_cert.cer
+    dest: /certs/shadowman_cert.cer
+    flat: yes
   delegate_to: aap.shadowman.dev
+
+- name: Copy Cert
+  ansible.builtin.copy:
+    src: /certs/shadowman_cert.cer
+    dest: /etc/pki/tls/certs/localhost.crt
 
 - name: Fetch key
   ansible.builtin.fetch:
     src: /certs/shadowman_private.key
     dest: /certs/shadowman_private.key
+    flat: yes
   delegate_to: aap.shadowman.dev
   
 - name: Copy Key
