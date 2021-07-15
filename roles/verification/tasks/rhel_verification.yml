@@ -13,4 +13,6 @@
     return_content: yes
   register: this
   failed_when: "inventory_hostname not in this.content"
-  when: os is match("rhel.*")
+  when: 
+    - os is match("rhel.*")
+    - ansible_host != ip_addr

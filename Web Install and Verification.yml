@@ -26,7 +26,9 @@
       return_content: yes
     register: this
     failed_when: "inventory_hostname not in this.content"
-    when: os is match("rhel.*")
+    when: 
+      - os is match("rhel.*")
+      - ansible_host != ip_addr
     tags:
       - updaterhel
     
@@ -38,7 +40,9 @@
       return_content: yes
     register: this
     failed_when: "inventory_hostname not in this.content"
-    when: os is match("windows.*")
+    when: 
+      - os is match("windows.*")
+      - ansible_host != ip_addr
     tags:
       - updatewin
   

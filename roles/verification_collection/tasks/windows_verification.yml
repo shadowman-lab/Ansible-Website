@@ -11,4 +11,6 @@
     validate_certs: no
     return_content: yes
   register: this
-  when: os is match("windows.*")
+  when: 
+    - os is match("windows.*")
+    - ansible_host != ip_addr
