@@ -5,7 +5,7 @@
     name: "{{ security_group }}"
     rules:
         - name: AllowHTTPANDHTTPS
-          protocol: Any
+          protocol: Tcp
           source_address_prefix: Any
           destination_port_range: 80,443
           access: Allow
