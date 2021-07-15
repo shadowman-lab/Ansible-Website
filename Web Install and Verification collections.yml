@@ -14,7 +14,7 @@
   - name: Windows IIS config
     ansible.builtin.include_role:
       name: webservers_collection
-    when: os is match("windows.*") or os is match("2016.*")
+    when: os is match("windows.*") or os == "2016-Datacenter"
     tags:
       - always
       
