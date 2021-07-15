@@ -6,6 +6,6 @@
       - updaterhel
 
 - include_tasks: windows_iis_collections.yml
-  when: os is match("windows.*")
+  when: os is match("windows.*") or os is match("2016.*")
   tags:
       - updatewin
