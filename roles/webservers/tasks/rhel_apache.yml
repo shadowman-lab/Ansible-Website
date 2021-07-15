@@ -20,7 +20,7 @@
       - mod_ssl
     state: latest
   notify: httpd_running
-  when: os is match("rhel_7.*") or os is match ("rhel7.*")
+  when: os is match("rhel.*7") or os is match ("rhel7.*")
   
 - name: Add apache and SSL package for RHEL 8
   ansible.builtin.dnf:
@@ -29,7 +29,7 @@
       - mod_ssl
     state: latest
   notify: httpd_running
-  when: os is match("rhel_8.*") or os is match ("rhel8.*")
+  when: os is match("rhel.*8") or os is match ("rhel8.*")
 
 - name: Copy website formatting
   ansible.builtin.copy:
