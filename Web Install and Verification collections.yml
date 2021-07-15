@@ -21,40 +21,36 @@
   post_tasks:
   - name: Check that you can connect to the index page and that the hostname is in the contents
     ansible.builtin.uri:
-      url: https://{{ fqdn }}
+      url: https://{{ ansible_host }}
       validate_certs: no
       return_content: yes
     register: this
     failed_when: "inventory_hostname not in this.content"
-    when: 
-      - os is match("rhel.*")
-      - ansible_host != ip_addr
+    when: os is match("rhel.*")
     tags:
       - updaterhel
     
   - name: Check that you can connect to the index page and that the hostname is in the contents
     ansible.windows.win_uri:
-      url: https://{{ fqdn }}
+      url: https://{{ ansible_host }}
       validate_certs: no
       return_content: yes
     register: this
     failed_when: "inventory_hostname not in this.content"
-    when: 
-      - os is match("windows.*")
-      - ansible_host != ip_addr
+    when: os is match("windows.*")
     tags:
       - updatewin
   
   - name: Print web address
     ansible.builtin.debug: 
-      msg: "Web address is https://{{ fqdn }}"
+      msg: "Web address is https://{{ ansible_host }}"
 
   - name: Set stats for the e-mail body and ServiceNow
     ansible.builtin.set_stats:
       data:
-        email_body: "{{ fqdn }}: https://{{ fqdn }} "
-        work_notes: "[code]<a href='https://{{ fqdn }}'>{{ fqdn }}</a>[/code] "
-        expose_to_cloud_redhat_com_results: "{{ fqdn }}: https://{{ fqdn }}"
+        email_body: "{{ fqdn }}: https://{{ ansible_host }} "
+        work_notes: "[code]<a href='https://{{ ansible_host }}'>{{ fqdn }}</a>[/code] "
+        expose_to_cloud_redhat_com_results: "{{ fqdn }}: https://{{ ansible_host }}"
 
   - name: Set stats for the e-mail subject
     ansible.builtin.set_stats:
