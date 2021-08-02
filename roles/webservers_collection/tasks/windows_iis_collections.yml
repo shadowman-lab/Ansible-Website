@@ -76,7 +76,7 @@
 - name: Fetch cert
   ansible.builtin.fetch:
     src: /certs/certificate.pfx
-    dest: /certs/certificate.pfx
+    dest: /tmp/certs/certificate.pfx
     flat: yes
   delegate_to: aap.shadowman.dev
 
@@ -84,12 +84,12 @@
   block:
     - name: Copy Cert
       ansible.windows.win_copy:
-        src: /certs/certificate.pfx
+        src: /tmp/certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
   rescue:
     - name: Retry Copy Cert due to WINRM issues
       ansible.windows.win_copy:
-        src: /certs/certificate.pfx
+        src: /tmp/certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
 - name: Install Cert
