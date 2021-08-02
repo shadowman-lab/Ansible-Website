@@ -51,13 +51,13 @@
 - name: Fetch key
   ansible.builtin.fetch:
     src: /certs/shadowman_private.key
-    dest: /certs/shadowman_private.key
+    dest: /tmp/certs/shadowman_private.key
     flat: yes
   delegate_to: aap.shadowman.dev
   
 - name: Copy Key
   ansible.builtin.copy:
-    src: /certs/shadowman_private.key
+    src: /tmp/certs/shadowman_private.key
     dest: /etc/pki/tls/private/localhost.key
 
 - name: Insert Index Page for webpage
