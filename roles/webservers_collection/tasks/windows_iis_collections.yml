@@ -73,23 +73,16 @@
         ssl: true
       notify: iis_running
 
-- name: Fetch cert
-  ansible.builtin.fetch:
-    src: /certs/certificate.pfx
-    dest: /tmp/certs/certificate.pfx
-    flat: yes
-  delegate_to: aap.shadowman.dev
-
 - name: Copy Cert
   block:
     - name: Copy Cert
       ansible.windows.win_copy:
-        src: /tmp/certs/certificate.pfx
+        src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
   rescue:
     - name: Retry Copy Cert due to WINRM issues
       ansible.windows.win_copy:
-        src: /tmp/certs/certificate.pfx
+        src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
 
 - name: Install Cert

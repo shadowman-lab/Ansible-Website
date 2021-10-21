@@ -36,16 +36,9 @@
     src: website/
     dest: /var/www/html/
 
-- name: Fetch cert
-  ansible.builtin.fetch:
-    src: /certs/shadowman_cert.cer
-    dest: /tmp/certs/shadowman_cert.cer
-    flat: yes
-  delegate_to: aap.shadowman.dev
-
 - name: Copy Cert
   ansible.builtin.copy:
-    src: /tmp/certs/shadowman_cert.cer
+    src: /certs/shadowman_cert.cer
     dest: /etc/pki/tls/certs/localhost.crt
 
 - name: Fetch key
