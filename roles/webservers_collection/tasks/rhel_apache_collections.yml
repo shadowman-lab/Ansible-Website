@@ -43,7 +43,7 @@
   
 - name: Copy Key
   ansible.builtin.copy:
-    src: /tmp/certs/shadowman_private.key
+    src: /certs/shadowman_private.key
     dest: /etc/pki/tls/private/localhost.key
 
 - name: Insert Index Page for webpage
