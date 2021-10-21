@@ -40,13 +40,6 @@
   ansible.builtin.copy:
     src: /certs/shadowman_cert.cer
     dest: /etc/pki/tls/certs/localhost.crt
-
-- name: Fetch key
-  ansible.builtin.fetch:
-    src: /certs/shadowman_private.key
-    dest: /tmp/certs/shadowman_private.key
-    flat: yes
-  delegate_to: aap.shadowman.dev
   
 - name: Copy Key
   ansible.builtin.copy:
