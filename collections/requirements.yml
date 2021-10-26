@@ -3,7 +3,7 @@ collections:
   - name: ansible.windows
 
   - name: community.windows
-    source: https://towerhub.shadowman.dev/api/galaxy/content/community/
+    source: https://towerpah.shadowman.dev/api/galaxy/content/community/
 
   - name: ansible.posix
   
