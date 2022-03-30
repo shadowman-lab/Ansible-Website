@@ -35,20 +35,32 @@
   ansible.builtin.copy:
     src: website/
     dest: /var/www/html/
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Copy Cert
   ansible.builtin.copy:
     src: /certs/shadowman_cert.cer
     dest: /etc/pki/tls/certs/localhost.crt
+    owner: root
+    group: root
+    mode: '0644'
   
 - name: Copy Key
   ansible.builtin.copy:
     src: /certs/shadowman_private.key
     dest: /etc/pki/tls/private/localhost.key
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Insert Index Page for webpage
   ansible.builtin.template:
     src: templates/indexcomplex.html.j2
     dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
   tags:
     - updaterhel
