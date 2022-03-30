@@ -12,7 +12,7 @@
         name: Web-Server
         state: present
       notify: iis_running
-  
+
 - name: Insert webpage formatting
   block:
     - name: Insert webpage formatting
@@ -32,14 +32,14 @@
         src: templates/indexcomplex.html.j2
         dest: C:\Inetpub\wwwroot\index.html
       tags:
-        - updatewin   
+        - updatewin
   rescue:
     - name: Retry Index Page for webpage due to WINRM issues
       ansible.windows.win_template:
         src: templates/indexcomplex.html.j2
         dest: C:\Inetpub\wwwroot\index.html
       tags:
-        - updatewin   
+        - updatewin
 
 - name: Remove Default Site
   block:
@@ -87,7 +87,7 @@
 
 - name: Install Cert
   block:
-    - name: install certificate 
+    - name: install certificate
       ansible.windows.win_certificate_store:
         path: C:\Inetpub\wwwroot\web_certificate.pfx
         file_type: pkcs12

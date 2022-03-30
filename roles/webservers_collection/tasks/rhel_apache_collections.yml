@@ -2,29 +2,29 @@
 - name: Open Firewalld for apache
   ansible.posix.firewalld:
     service: http
-    permanent: yes
-    state: enabled 
+    permanent: true
+    state: enabled
   notify: restart_firewalld
 
 - name: Open Firewalld for SSL
   ansible.posix.firewalld:
     service: https
-    permanent: yes
+    permanent: true
     state: enabled
   notify: restart_firewalld
 
 - name: Add apache and SSL package for RHEL 7
   ansible.builtin.yum:
-    name: 
+    name:
       - httpd
       - mod_ssl
     state: latest
   notify: httpd_running
   when: os is match("rhel.*7.*") or os is match ("rhel7.*")
-  
+
 - name: Add apache and SSL package for RHEL 8
   ansible.builtin.dnf:
-    name: 
+    name:
       - httpd
       - mod_ssl
     state: latest
@@ -46,7 +46,7 @@
     owner: root
     group: root
     mode: '0644'
-  
+
 - name: Copy Key
   ansible.builtin.copy:
     src: /certs/shadowman_private.key

@@ -3,7 +3,7 @@
   ansible.builtin.service:
     name: httpd
     state: started
-    
+
 - name: iis_running
   ansible.windows.win_service:
     name: W3Svc

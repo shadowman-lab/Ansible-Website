@@ -3,57 +3,57 @@
   gather_facts: false
 
   tasks:
-  
+
   - name: RHEL Apache config
-    ansible.builtin.include_role: 
+    ansible.builtin.include_role:
       name: webservers_collection
     when: os is match("rhel.*")
     tags:
       - always
-      
+
   - name: Windows IIS config
     ansible.builtin.include_role:
       name: webservers_collection
     when: os is match("windows.*") or os == "2016-Datacenter"
     tags:
       - always
-      
+
   post_tasks:
-  - name: Check that you can connect to the index page and that the hostname is in the contents
-    ansible.builtin.uri:
-      url: https://{{ ansible_host }}
-      validate_certs: no
-      return_content: yes
-    register: this
-    failed_when: "inventory_hostname not in this.content"
-    when: os is match("rhel.*")
-    tags:
-      - updaterhel
-    
-  - name: Check that you can connect to the index page and that the hostname is in the contents
-    ansible.windows.win_uri:
-      url: https://{{ ansible_host }}
-      validate_certs: no
-      return_content: yes
-    register: this
-    failed_when: "inventory_hostname not in this.content"
-    when: os is match("windows.*") or os is match("2016.*")
-    tags:
-      - updatewin
-  
-  - name: Print web address
-    ansible.builtin.debug: 
-      msg: "Web address is https://{{ ansible_host }}"
+    - name: Check that you can connect to the index page and that the hostname is in the contents
+      ansible.builtin.uri:
+        url: https://{{ ansible_host }}
+        validate_certs: false
+        return_content: true
+      register: this
+      failed_when: "inventory_hostname not in this.content"
+      when: os is match("rhel.*")
+      tags:
+        - updaterhel
 
-  - name: Set stats for the e-mail body and ServiceNow
-    ansible.builtin.set_stats:
-      data:
-        email_body: "{{ fqdn }}: https://{{ ansible_host }} "
-        work_notes: "[code]<a href='https://{{ ansible_host }}'>{{ fqdn }}</a>[/code] "
-        expose_to_cloud_redhat_com_results: "{{ fqdn }}: https://{{ ansible_host }}"
+    - name: Check that you can connect to the index page and that the hostname is in the contents
+      ansible.windows.win_uri:
+        url: https://{{ ansible_host }}
+        validate_certs: false
+        return_content: true
+      register: this
+      failed_when: "inventory_hostname not in this.content"
+      when: os is match("windows.*") or os is match("2016.*")
+      tags:
+        - updatewin
 
-  - name: Set stats for the e-mail subject
-    ansible.builtin.set_stats:
-      data:
-        email_subject: "Ansible VM Web Link"
-    run_once: true
+    - name: Print web address
+      ansible.builtin.debug:
+        msg: "Web address is https://{{ ansible_host }}"
+
+    - name: Set stats for the e-mail body and ServiceNow
+      ansible.builtin.set_stats:
+        data:
+          email_body: "{{ fqdn }}: https://{{ ansible_host }} "
+          work_notes: "[code]<a href='https://{{ ansible_host }}'>{{ fqdn }}</a>[/code] "
+          expose_to_cloud_redhat_com_results: "{{ fqdn }}: https://{{ ansible_host }}"
+
+    - name: Set stats for the e-mail subject
+      ansible.builtin.set_stats:
+        data:
+          email_subject: "Ansible VM Web Link"
+      run_once: true

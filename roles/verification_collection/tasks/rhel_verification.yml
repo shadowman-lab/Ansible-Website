@@ -3,14 +3,14 @@
   ansible.builtin.service:
     name: httpd
     state: started
-    enabled: yes
+    enabled: true
   when: os is match("rhel.*")
 
 - name: Check that you can connect to the index page and that the hostname is in the contents
   ansible.builtin.uri:
     url: http://{{ ansible_host }}/index.html
-    validate_certs: no
-    return_content: yes
+    validate_certs: false
+    return_content: true
   register: this
   failed_when: "inventory_hostname not in this.content"
   when: os is match("rhel.*")

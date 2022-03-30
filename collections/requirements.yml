@@ -5,4 +5,3 @@ collections:
   - name: community.windows
 
   - name: ansible.posix
-  
