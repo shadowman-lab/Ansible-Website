@@ -25,7 +25,7 @@
     force_basic_auth: true
     body:
       '{"target_commitish": "main",
-      "name": "{{ repo }} {{ tag }}",
+      "name": "Ansible Web App {{ tag }}",
       "draft": false,
       "prerelease": false,
       "tag_name": "{{ tag }}"}'
