@@ -1,0 +1,6 @@
+- name: Deploy new Gitea release
+  hosts: "{{ vm_name | default('all') }}"
+  gather_facts: false
+
+  roles:
+    - deploy_new_release

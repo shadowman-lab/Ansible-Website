@@ -1,0 +1,6 @@
+- name: Create new Gitea release
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+    - new_release

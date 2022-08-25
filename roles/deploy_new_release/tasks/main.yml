@@ -1,0 +1,10 @@
+---
+- name: Create a Gitea Release using basic authentication
+  ansible.builtin.unarchive:
+    src: "https://cicd.shadowman.dev:3000/api/v1/repos/{{ gitea_user }}/{{ app }}/archive/{{ release_tag }}"
+    remote_src: true
+    owner: root
+    group: root
+    mode: '0755'
+    dest: /var/www
+    validate_certs: false
