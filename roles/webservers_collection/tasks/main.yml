@@ -1,11 +1,13 @@
 ---
 
-- include_tasks: rhel_apache_collections.yml
+- name: Setup webserver RHEL
+  ansible.builtin.include_tasks: rhel_apache_collections.yml
   when: os is match("rhel.*")
   tags:
       - updaterhel
 
-- include_tasks: windows_iis_collections.yml
+- name: Setup webserver Windows
+  ansible.builtin.include_tasks: windows_iis_collections.yml
   when: os is match("windows.*") or os is match("2016.*")
   tags:
       - updatewin

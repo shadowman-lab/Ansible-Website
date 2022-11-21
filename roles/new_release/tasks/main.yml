@@ -13,7 +13,7 @@
 
 - name: Set Fact for next release version
   ansible.builtin.set_fact:
-    tag: "{{ (releases.json[0].tag_name | default('0.9') | float + 0.1) | round(1,'common') }}"
+    tag: "{{ (releases.json[0].tag_name | default('0.9') | float + 0.1) | round(1, 'common') }}"
 
 - name: Create a Gitea Release using basic authentication
   ansible.builtin.uri:

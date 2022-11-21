@@ -1,6 +1,8 @@
 ---
-- include_tasks: rhel_verification.yml
+- name: RHEL website verification
+  ansible.builtin.include_tasks: rhel_verification.yml
   when: os is match("rhel.*")
 
-- include_tasks: windows_verification.yml
+- name: Windows website verification
+  ansible.builtin.include_tasks: windows_verification.yml
   when: os is match("windows.*") or os is match("2016.*")
