@@ -3,6 +3,7 @@
   ansible.builtin.service:
     name: httpd
     state: started
+    enabled: true
 
 - name: IIS_running
   ansible.windows.win_service:
