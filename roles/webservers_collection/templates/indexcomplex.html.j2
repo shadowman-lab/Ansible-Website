@@ -20,7 +20,7 @@
     <img src="assets/img/logo.png" alt="Global">
     <p>Automation Controller Demo</p>
   </a>
-  <p class="device-notification--message">Automation Controller Demo. - {{ inventory_hostname }}</p>
+  <p class="device-notification--message">Automation Controller Demo. - {{ fqdn }}</p>
 </div>
 
 <div class="perspective effect-rotate-left">
@@ -30,7 +30,7 @@
         <header class="header">
           <a class="header--logo" href="#0">
             <img src="assets/img/logo.png" alt="Global">
-            <p>Automation Controller Demo - {{ inventory_hostname }}</p>
+            <p>Automation Controller Demo - {{ fqdn }}</p>
           </a>
           <button class="header--cta cta">Request a Trial</button>
           <div class="header--nav-toggle">
@@ -90,7 +90,7 @@
                   <div class="modal--information">
                       <p>Alexander Dworjan</p>
 					  <p>Ansible Solutions Specialist</p>
-            <p>Running on {{ inventory_hostname }}</p>
+            <p>Running on {{ fqdn }}</p>
                   </div>
                 </div>
               </div>
