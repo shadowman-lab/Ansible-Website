@@ -1,4 +1,9 @@
 ---
+- name: Ensure Firewalld is installed
+  ansible.builtin.package:
+    name: firewalld
+    state: present
+
 - name: Open Firewalld for apache
   ansible.posix.firewalld:
     service: http
@@ -18,7 +23,7 @@
     name:
       - httpd
       - mod_ssl
-    state: latest
+    state: present
   notify: HTTPD_running
 
 - name: Copy website formatting
