@@ -7,14 +7,14 @@
   - name: RHEL Apache config
     ansible.builtin.include_role:
       name: webservers_collection
-    when: os is match("rhel.*")
+    when: os is match("rhel.*") or os == "Red Hat Enterprise Linux"
     tags:
       - always
 
   - name: Windows IIS config
     ansible.builtin.include_role:
       name: webservers_collection
-    when: os is match("windows.*") or os == "2016-Datacenter"
+    when: os is match("windows.*") or os is match("2016.*") or os == "Windows"
     tags:
       - always
 
@@ -26,7 +26,7 @@
         return_content: true
       register: this
       failed_when: "inventory_hostname not in this.content"
-      when: os is match("rhel.*")
+      when: os is match("rhel.*") or os == "Red Hat Enterprise Linux"
       tags:
         - updaterhel
 
@@ -37,7 +37,7 @@
         return_content: true
       register: this
       failed_when: "inventory_hostname not in this.content"
-      when: os is match("windows.*") or os is match("2016.*")
+      when: os is match("windows.*") or os is match("2016.*") or os == "Windows"
       tags:
         - updatewin
 
