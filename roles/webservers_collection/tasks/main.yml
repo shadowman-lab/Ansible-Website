@@ -2,12 +2,12 @@
 
 - name: Setup webserver RHEL
   ansible.builtin.include_tasks: rhel_apache_collections.yml
-  when: os is match("rhel.*") or os is match ("Red Hat Enterprise Linux")
+  when: os is match("rhel.*") or os == "Red Hat Enterprise Linux"
   tags:
       - updaterhel
 
 - name: Setup webserver Windows
   ansible.builtin.include_tasks: windows_iis_collections.yml
-  when: os is match("windows.*") or os is match("2016.*") or os is match("Windows")
+  when: os is match("windows.*") or os is match("2016.*") or os == "Windows"
   tags:
       - updatewin
