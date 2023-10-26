@@ -19,11 +19,15 @@
       ansible.windows.win_copy:
         src: website/
         dest: C:\Inetpub\wwwroot\
+      tags:
+        - updatewin
   rescue:
     - name: Retry webpage formatting due to WINRM issues
       ansible.windows.win_copy:
         src: website/
         dest: C:\Inetpub\wwwroot\
+      tags:
+        - updatewin
 
 - name: Insert Index Page for webpage
   block:
