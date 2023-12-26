@@ -32,7 +32,7 @@
     dest: /var/www/html/
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   tags:
     - updaterhel
 
@@ -42,7 +42,7 @@
     dest: /etc/pki/tls/certs/localhost.crt
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
 
 - name: Copy Key
   ansible.builtin.copy:
@@ -50,7 +50,7 @@
     dest: /etc/pki/tls/private/localhost.key
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
 
 - name: Insert Index Page for webpage
   ansible.builtin.template:
@@ -58,6 +58,6 @@
     dest: /var/www/html/index.html
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   tags:
     - updaterhel

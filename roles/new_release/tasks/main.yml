@@ -1,7 +1,7 @@
 ---
 - name: Gather current app releases
   ansible.builtin.uri:
-    url: "https://cicd.shadowman.dev:3000/api/v1/repos/{{ gitea_user }}/{{ repo }}/releases"
+    url: https://cicd.shadowman.dev:3000/api/v1/repos/{{ gitea_user }}/{{ repo }}/releases
     method: GET
     user: "{{ gitea_user }}"
     password: "{{ gitea_password }}"
@@ -17,18 +17,13 @@
 
 - name: Create a Gitea Release using basic authentication
   ansible.builtin.uri:
-    url: "https://cicd.shadowman.dev:3000/api/v1/repos/{{ gitea_user }}/{{ repo }}/releases"
+    url: https://cicd.shadowman.dev:3000/api/v1/repos/{{ gitea_user }}/{{ repo }}/releases
     method: POST
     user: "{{ gitea_user }}"
     password: "{{ gitea_password }}"
     body_format: json
     force_basic_auth: true
-    body:
-      '{"target_commitish": "main",
-      "name": "Ansible Web App {{ tag }}",
-      "draft": false,
-      "prerelease": false,
-      "tag_name": "{{ tag }}"}'
+    body: '{"target_commitish": "main", "name": "Ansible Web App {{ tag }}", "draft": false, "prerelease": false, "tag_name": "{{ tag }}"}'
     status_code: 201
     validate_certs: false
   register: __result

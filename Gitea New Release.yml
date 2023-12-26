@@ -1,3 +1,4 @@
+---
 - name: Create new Gitea release
   hosts: localhost
   gather_facts: false
