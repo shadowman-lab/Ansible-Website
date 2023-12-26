@@ -1,4 +1,4 @@
-- name: verify index page works
+- name: Verify index page works
   hosts: "{{ vm_name | default('all') }}"
   gather_facts: false
 

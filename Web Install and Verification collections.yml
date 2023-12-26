@@ -4,19 +4,19 @@
 
   tasks:
 
-  - name: RHEL Apache config
-    ansible.builtin.include_role:
-      name: webservers_collection
-    when: os is match("rhel.*") or os == "Red Hat BYOL Linux"
-    tags:
-      - always
+    - name: RHEL Apache config
+      ansible.builtin.include_role:
+        name: webservers_collection
+      when: os is match("rhel.*") or os == "Red Hat BYOL Linux"
+      tags:
+        - always
 
-  - name: Windows IIS config
-    ansible.builtin.include_role:
-      name: webservers_collection
-    when: os is match("windows.*") or os is match("2016.*") or os == "Windows"
-    tags:
-      - always
+    - name: Windows IIS config
+      ansible.builtin.include_role:
+        name: webservers_collection
+      when: os is match("windows.*") or os is match("2016.*") or os == "Windows"
+      tags:
+        - always
 
   post_tasks:
     - name: Check that you can connect to the index page and that the hostname is in the contents
@@ -52,7 +52,7 @@
           work_notes: "[code]<a href='https://{{ ansible_host }}'>{{ fqdn }}</a>[/code] "
           expose_to_cloud_redhat_com_results: "{{ fqdn }}: https://{{ ansible_host }}"
 
-    - name: Set stats for the e-mail subject
+    - name: Set stats for the e-mail subject  # noqa run-once[task]
       ansible.builtin.set_stats:
         data:
           email_subject: "Ansible VM Web Link"
