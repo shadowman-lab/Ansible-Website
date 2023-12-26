@@ -1,9 +1,9 @@
+---
 - name: Install web server, insert an index page, verify service is started and that the index page appears
   hosts: "{{ vm_name | default('all') }}"
   gather_facts: false
 
   tasks:
-
     - name: RHEL Apache config
       ansible.builtin.include_role:
         name: webservers_collection
@@ -25,7 +25,7 @@
         validate_certs: false
         return_content: true
       register: this
-      failed_when: "inventory_hostname not in this.content"
+      failed_when: inventory_hostname not in this.content
       when: os is match("rhel.*") or os == "Red Hat BYOL Linux"
       tags:
         - updaterhel
@@ -36,14 +36,14 @@
         validate_certs: false
         return_content: true
       register: this
-      failed_when: "inventory_hostname not in this.content"
+      failed_when: inventory_hostname not in this.content
       when: os is match("windows.*") or os is match("2016.*") or os == "Windows"
       tags:
         - updatewin
 
     - name: Print web address
       ansible.builtin.debug:
-        msg: "Web address is https://{{ ansible_host }}"
+        msg: Web address is https://{{ ansible_host }}
 
     - name: Set stats for the e-mail body and ServiceNow
       ansible.builtin.set_stats:
@@ -52,8 +52,8 @@
           work_notes: "[code]<a href='https://{{ ansible_host }}'>{{ fqdn }}</a>[/code] "
           expose_to_cloud_redhat_com_results: "{{ fqdn }}: https://{{ ansible_host }}"
 
-    - name: Set stats for the e-mail subject  # noqa run-once[task]
+    - name: Set stats for the e-mail subject # noqa run-once[task]
       ansible.builtin.set_stats:
         data:
-          email_subject: "Ansible VM Web Link"
+          email_subject: Ansible VM Web Link
       run_once: true

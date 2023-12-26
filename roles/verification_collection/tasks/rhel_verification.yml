@@ -12,5 +12,5 @@
     validate_certs: false
     return_content: true
   register: this
-  failed_when: "inventory_hostname not in this.content"
+  failed_when: inventory_hostname not in this.content
   when: os is match("rhel.*") or os == "Red Hat BYOL Linux"

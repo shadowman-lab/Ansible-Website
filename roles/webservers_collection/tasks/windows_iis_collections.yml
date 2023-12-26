@@ -49,20 +49,20 @@
   block:
     - name: Remove Default Site
       community.windows.win_iis_website:
-        name: 'Default Web Site'
+        name: Default Web Site
         state: absent
   rescue:
     - name: Remove Default Site again due to WINRM
       community.windows.win_iis_website:
-        name: 'Default Web Site'
+        name: Default Web Site
         state: absent
 
 - name: Configure site
   block:
     - name: Configure site
       community.windows.win_iis_website:
-        name: 'Ansible Tower'
-        physical_path: 'C:\inetpub\wwwroot'
+        name: Ansible Tower
+        physical_path: C:\inetpub\wwwroot
         state: started
         port: 80
         ssl: true
@@ -70,8 +70,8 @@
   rescue:
     - name: Configure site twice due to WinRM
       community.windows.win_iis_website:
-        name: 'Ansible Tower'
-        physical_path: 'C:\inetpub\wwwroot'
+        name: Ansible Tower
+        physical_path: C:\inetpub\wwwroot
         state: started
         port: 80
         ssl: true
@@ -115,18 +115,18 @@
   block:
     - name: Configure site bindings
       community.windows.win_iis_webbinding:
-        name: 'Ansible Tower'
-        port: '443'
-        protocol: 'https'
-        certificate_hash: '{{ thumbprint.thumbprints[0] }}'
-        state: 'present'
+        name: Ansible Tower
+        port: "443"
+        protocol: https
+        certificate_hash: "{{ thumbprint.thumbprints[0] }}"
+        state: present
       notify: IIS_running
   rescue:
     - name: Configure site bindings twice due to WINRM issues
       community.windows.win_iis_webbinding:
-        name: 'Ansible Tower'
-        port: '443'
-        protocol: 'https'
-        certificate_hash: '{{ thumbprint.thumbprints[0] }}'
-        state: 'present'
+        name: Ansible Tower
+        port: "443"
+        protocol: https
+        certificate_hash: "{{ thumbprint.thumbprints[0] }}"
+        state: present
       notify: IIS_running

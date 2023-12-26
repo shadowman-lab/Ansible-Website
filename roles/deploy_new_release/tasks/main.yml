@@ -1,10 +1,10 @@
 ---
 - name: Deploy a new application release
   ansible.builtin.unarchive:
-    src: "https://cicd.shadowman.dev:3000/api/v1/repos/{{ gitea_user }}/{{ repo }}/archive/{{ release_tag }}.tar.gz"
+    src: https://cicd.shadowman.dev:3000/api/v1/repos/{{ gitea_user }}/{{ repo }}/archive/{{ release_tag }}.tar.gz
     remote_src: true
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
     dest: /var/www
     validate_certs: false
