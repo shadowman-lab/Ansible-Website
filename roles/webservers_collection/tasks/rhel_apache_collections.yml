@@ -50,7 +50,7 @@
     dest: /etc/pki/tls/private/localhost.key
     owner: root
     group: root
-    mode: "0644"
+    mode: "0400"
 
 - name: Insert Index Page for webpage
   ansible.builtin.template:
