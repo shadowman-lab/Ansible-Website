@@ -10,3 +10,4 @@
     validate_certs: false
     return_content: true
   register: this
+  failed_when: inventory_hostname not in this.content
