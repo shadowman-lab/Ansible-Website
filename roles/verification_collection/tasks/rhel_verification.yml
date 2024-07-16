@@ -4,7 +4,6 @@
     name: httpd
     state: started
     enabled: true
-  when: os is match("rhel.*") or os == "Red Hat BYOL Linux"
 
 - name: Check that you can connect to the index page and that the hostname is in the contents
   ansible.builtin.uri:
@@ -13,4 +12,3 @@
     return_content: true
   register: this
   failed_when: inventory_hostname not in this.content
-  when: os is match("rhel.*") or os == "Red Hat BYOL Linux"
