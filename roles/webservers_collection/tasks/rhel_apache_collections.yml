@@ -64,8 +64,8 @@
     - updaterhel
 
 - name: Set artifacts for EDA
-  ansible.builtin.set_stats:
-    data:
-      hash: "{{ indexresult.checksum }}"
+  ansible.builtin.set_fact:
+    hash: "{{ indexresult.checksum }}"
+    cacheable: true
   tags:
     - updaterhel
