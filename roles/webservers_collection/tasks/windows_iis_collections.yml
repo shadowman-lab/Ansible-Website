@@ -35,7 +35,6 @@
       ansible.windows.win_template:
         src: templates/indexcomplex.html.j2
         dest: C:\Inetpub\wwwroot\index.html
-      register: indexresult
       tags:
         - updatewin
   rescue:
@@ -43,16 +42,8 @@
       ansible.windows.win_template:
         src: templates/indexcomplex.html.j2
         dest: C:\Inetpub\wwwroot\index.html
-      register: indexresult
       tags:
         - updatewin
-
-- name: Set artifacts for EDA
-  ansible.builtin.set_fact:
-    hash: "{{ indexresult.checksum }}"
-    cacheable: true
-  tags:
-    - updatewin
 
 - name: Remove Default Site
   block:
