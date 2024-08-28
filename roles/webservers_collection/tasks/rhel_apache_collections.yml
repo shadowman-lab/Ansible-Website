@@ -59,5 +59,13 @@
     owner: root
     group: root
     mode: "0644"
+  register: indexresult
+  tags:
+    - updaterhel
+
+- name: Set artifacts for EDA
+  ansible.builtin.set_stats:
+    data:
+      hash: "{{ indexresult.checksum }}"
   tags:
     - updaterhel
