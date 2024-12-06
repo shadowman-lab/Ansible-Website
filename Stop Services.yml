@@ -1,0 +1,7 @@
+---
+- name: Stop Services
+  hosts: all
+  gather_facts: false
+
+  roles:
+    - stop_services

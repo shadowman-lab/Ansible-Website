@@ -1,0 +1,12 @@
+---
+- name: Stop Httpd
+  ansible.builtin.service:
+    name: httpd
+    state: stopped
+  when: os is match("rhel.*") or os == "Red Hat BYOL Linux"
+
+- name: Stop IIS
+  ansible.windows.win_service:
+    name: W3Svc
+    state: stopped
+  when: os is match("windows.*") or os is match("2016.*") or os == "Windows"
