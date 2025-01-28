@@ -18,17 +18,12 @@
     state: enabled
   notify: Restart_firewalld
 
-- name: Add apache package
+- name: Add apache and SSL package
   ansible.builtin.package:
-    name: httpd
+    name:
+      - httpd
+      - mod_ssl
     state: present
-  notify: HTTPD_running
-
-- name: Add SSL package
-  ansible.builtin.package:
-    name: mod_ssl
-    state: present
-  when: shadowman_provision_hypervisor == "VMWare"
   notify: HTTPD_running
 
 - name: Copy website formatting
@@ -48,7 +43,6 @@
     owner: root
     group: root
     mode: "0644"
-  when: shadowman_provision_hypervisor == "VMWare"
 
 - name: Copy Key
   ansible.builtin.copy:
@@ -57,7 +51,6 @@
     owner: root
     group: root
     mode: "0400"
-  when: shadowman_provision_hypervisor == "VMWare"
 
 - name: Insert Index Page for webpage
   ansible.builtin.template:
