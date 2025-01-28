@@ -1,0 +1,8 @@
+---
+- name: Get httpd journal information
+  ansible.builtin.command:
+    cmd: journalctl -xeu httpd.service
+
+- name: Get httpd status
+  ansible.builtin.command:
+    cmd: systemctl status httpd

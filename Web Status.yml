@@ -1,0 +1,7 @@
+---
+- name: Get Httpd status
+  hosts: "{{ vm_name | default('all') }}"
+  gather_facts: false
+
+  roles:
+    - httpd_status
