@@ -1,4 +1,9 @@
 ---
+- name: Get info for a IIS service
+  ansible.windows.win_service_info:
+    name: W3Svc
+  register: iis_service_info
+
 - name: Copy Cert
   block:
     - name: Copy Cert
@@ -6,12 +11,14 @@
         src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
       notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"
   rescue:
     - name: Retry Copy Cert due to WINRM issues
       ansible.windows.win_copy:
         src: /certs/certificate.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
       notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"
 
 - name: Install Cert
   block:
@@ -25,6 +32,7 @@
         key_storage: machine
       register: thumbprint
       notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"
   rescue:
     - name: Install certificate twice due to WinRM
       ansible.windows.win_certificate_store:
@@ -36,6 +44,7 @@
         key_storage: machine
       register: thumbprint
       notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"
 
 - name: Configure bindings
   block:
@@ -49,6 +58,7 @@
               protocol: https
               certificate_hash: "{{ thumbprint.thumbprints[0] }}"
       notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"
 
   rescue:
     - name: Configure site bindings
@@ -61,3 +71,4 @@
               protocol: https
               certificate_hash: "{{ thumbprint.thumbprints[0] }}"
       notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"

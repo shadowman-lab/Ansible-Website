@@ -1,4 +1,7 @@
 ---
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
 - name: Copy Cert
   ansible.builtin.copy:
     src: /certs/shadowman_cert.cer
@@ -7,6 +10,7 @@
     group: root
     mode: "0644"
   notify: HTTPD_restart
+  when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
 
 - name: Copy Key
   ansible.builtin.copy:
@@ -16,3 +20,4 @@
     group: root
     mode: "0400"
   notify: HTTPD_restart
+  when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
