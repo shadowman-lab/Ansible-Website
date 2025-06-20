@@ -1,0 +1,63 @@
+---
+- name: Copy Cert
+  block:
+    - name: Copy Cert
+      ansible.windows.win_copy:
+        src: /certs/certificate.pfx
+        dest: C:\Inetpub\wwwroot\web_certificate.pfx
+      notify: IIS_restart
+  rescue:
+    - name: Retry Copy Cert due to WINRM issues
+      ansible.windows.win_copy:
+        src: /certs/certificate.pfx
+        dest: C:\Inetpub\wwwroot\web_certificate.pfx
+      notify: IIS_restart
+
+- name: Install Cert
+  block:
+    - name: Install certificate
+      ansible.windows.win_certificate_store:
+        path: C:\Inetpub\wwwroot\web_certificate.pfx
+        file_type: pkcs12
+        state: present
+        password: "{{ windowspassword }}"
+        store_location: LocalMachine
+        key_storage: machine
+      register: thumbprint
+      notify: IIS_restart
+  rescue:
+    - name: Install certificate twice due to WinRM
+      ansible.windows.win_certificate_store:
+        path: C:\Inetpub\wwwroot\web_certificate.pfx
+        file_type: pkcs12
+        state: present
+        password: "{{ windowspassword }}"
+        store_location: LocalMachine
+        key_storage: machine
+      register: thumbprint
+      notify: IIS_restart
+
+- name: Configure bindings
+  block:
+    - name: Configure site bindings
+      microsoft.iis.website:
+        name: Ansible Tower
+        state: started
+        bindings:
+          add:
+            - port: "443"
+              protocol: https
+              certificate_hash: "{{ thumbprint.thumbprints[0] }}"
+      notify: IIS_restart
+
+  rescue:
+    - name: Configure site bindings
+      microsoft.iis.website:
+        name: Ansible Tower
+        state: started
+        bindings:
+          add:
+            - port: "443"
+              protocol: https
+              certificate_hash: "{{ thumbprint.thumbprints[0] }}"
+      notify: IIS_restart
