@@ -58,7 +58,9 @@
               protocol: https
               certificate_hash: "{{ thumbprint.thumbprints[0] }}"
       notify: IIS_restart
-      when: iis_service_info.services[0].state == "started"
+      when:
+        - iis_service_info.services[0].state == "started"
+        - thumbprint.changed
 
   rescue:
     - name: Configure site bindings
@@ -71,4 +73,6 @@
               protocol: https
               certificate_hash: "{{ thumbprint.thumbprints[0] }}"
       notify: IIS_restart
-      when: iis_service_info.services[0].state == "started"
+      when:
+        - iis_service_info.services[0].state == "started"
+        - thumbprint.changed
