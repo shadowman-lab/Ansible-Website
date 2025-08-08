@@ -27,7 +27,7 @@
   notify: HTTPD_running
 
 - name: Copy website formatting
-  ansible.builtin.copy:
+  ansible.posix.synchronize:
     src: website/
     dest: /var/www/html/
     owner: root
