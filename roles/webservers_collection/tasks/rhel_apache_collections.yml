@@ -27,9 +27,12 @@
   notify: HTTPD_running
 
 - name: Copy website formatting
-  ansible.posix.synchronize:
+  ansible.builtin.copy:
     src: website/
     dest: /var/www/html/
+    owner: root
+    group: root
+    mode: "0644"
   tags:
     - updaterhel
 
