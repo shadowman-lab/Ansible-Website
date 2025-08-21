@@ -16,9 +16,9 @@
   register: cert_data
   when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
 
-- name: Copy Cert
+- name: Deploy Cert
   ansible.builtin.copy:
-    src: "{{ cert_data.data.data.certificate }}"
+    content: "{{ cert_data.data.data.certificate }}"
     dest: /etc/pki/tls/certs/localhost.crt
     owner: root
     group: root
@@ -26,9 +26,9 @@
   notify: HTTPD_restart
   when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
 
-- name: Copy Key
+- name: Deploy Key
   ansible.builtin.copy:
-    src: "{{ cert_data.data.data.private_key }}"
+    content: "{{ cert_data.data.data.private_key }}"
     dest: /etc/pki/tls/private/localhost.key
     owner: root
     group: root
