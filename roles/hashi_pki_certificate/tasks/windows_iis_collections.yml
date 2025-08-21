@@ -18,6 +18,7 @@
     path: /tmp/{{ inventory_hostname }}.pfx
     friendly_name: ansiblewindows
     passphrase: "{{ windowspassword }}"
+    encryption_level: compatibility2022
     certificate_content: "{{ cert_data.data.data.certificate }}"
     privatekey_content: "{{ cert_data.data.data.private_key }}"
     state: present
