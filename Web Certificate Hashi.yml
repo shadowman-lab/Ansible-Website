@@ -1,0 +1,7 @@
+---
+- name: Rotate SSL Certificates
+  hosts: "{{ vm_name | default('all') }}"
+  gather_facts: false
+
+  roles:
+    - hashi_pki_certificate

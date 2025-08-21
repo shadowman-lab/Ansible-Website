@@ -1,0 +1,11 @@
+---
+- name: HTTPD_restart
+  ansible.builtin.service:
+    name: httpd
+    state: restarted
+    enabled: true
+
+- name: IIS_restart
+  ansible.windows.win_service:
+    name: W3Svc
+    state: restarted

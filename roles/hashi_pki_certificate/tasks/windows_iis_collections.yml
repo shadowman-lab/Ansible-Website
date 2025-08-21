@@ -1,0 +1,102 @@
+---
+- name: Generate a certificate with an approle login
+  community.hashi_vault.vault_pki_generate_certificate:
+    role_name: shadowman-dev
+    common_name: "{{ inventory_hostname }}"
+    ttl: 47d
+    url: "{{ hashi_url }}"
+    auth_method: approle
+    role_id: "{{ hashi_role_id }}"
+    secret_id: "{{ hashi_secret_id }}"
+    validate_certs: false
+  delegate_to: localhost
+  register: cert_data
+
+- name: Generate pfx file from certificate and key
+  community.crypto.openssl_pkcs12:
+    action: export
+    path: /tmp/{{ inventory_hostname }}.pfx
+    friendly_name: ansiblewindows
+    passphrase: "{{ windowspassword }}"
+    certificate_content: "{{ cert_data.data.data.certificate }}"
+    privatekey_content: "{{ cert_data.data.data.private_key }}"
+    state: present
+  delegate_to: localhost
+
+- name: Get info for a IIS service
+  ansible.windows.win_service_info:
+    name: W3Svc
+  register: iis_service_info
+
+- name: Copy Cert
+  block:
+    - name: Copy Cert
+      ansible.windows.win_copy:
+        src: /tmp/{{ inventory_hostname }}.pfx
+        dest: C:\Inetpub\wwwroot\web_certificate.pfx
+      notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"
+  rescue:
+    - name: Retry Copy Cert due to WINRM issues
+      ansible.windows.win_copy:
+        src: /tmp/{{ inventory_hostname }}.pfx
+        dest: C:\Inetpub\wwwroot\web_certificate.pfx
+      notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"
+
+- name: Install Cert
+  block:
+    - name: Install certificate
+      ansible.windows.win_certificate_store:
+        path: C:\Inetpub\wwwroot\web_certificate.pfx
+        file_type: pkcs12
+        state: present
+        password: "{{ windowspassword }}"
+        store_location: LocalMachine
+        key_storage: machine
+      register: thumbprint
+      notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"
+  rescue:
+    - name: Install certificate twice due to WinRM
+      ansible.windows.win_certificate_store:
+        path: C:\Inetpub\wwwroot\web_certificate.pfx
+        file_type: pkcs12
+        state: present
+        password: "{{ windowspassword }}"
+        store_location: LocalMachine
+        key_storage: machine
+      register: thumbprint
+      notify: IIS_restart
+      when: iis_service_info.services[0].state == "started"
+
+- name: Configure bindings
+  block:
+    - name: Configure site bindings
+      microsoft.iis.website:
+        name: Ansible Tower
+        state: started
+        bindings:
+          add:
+            - port: "443"
+              protocol: https
+              certificate_hash: "{{ thumbprint.thumbprints[0] }}"
+      notify: IIS_restart
+      when:
+        - iis_service_info.services[0].state == "started"
+        - thumbprint.changed
+
+  rescue:
+    - name: Configure site bindings
+      microsoft.iis.website:
+        name: Ansible Tower
+        state: started
+        bindings:
+          add:
+            - port: "443"
+              protocol: https
+              certificate_hash: "{{ thumbprint.thumbprints[0] }}"
+      notify: IIS_restart
+      when:
+        - iis_service_info.services[0].state == "started"
+        - thumbprint.changed

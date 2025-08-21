@@ -1,0 +1,37 @@
+---
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Generate a certificate with an approle login
+  community.hashi_vault.vault_pki_generate_certificate:
+    role_name: shadowman-dev
+    common_name: "{{ inventory_hostname }}"
+    ttl: 47d
+    url: "{{ hashi_url }}"
+    auth_method: approle
+    role_id: "{{ hashi_role_id }}"
+    secret_id: "{{ hashi_secret_id }}"
+    validate_certs: false
+  delegate_to: localhost
+  register: cert_data
+  when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
+
+- name: Copy Cert
+  ansible.builtin.copy:
+    src: "{{ cert_data.data.data.certificate }}"
+    dest: /etc/pki/tls/certs/localhost.crt
+    owner: root
+    group: root
+    mode: "0644"
+  notify: HTTPD_restart
+  when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
+
+- name: Copy Key
+  ansible.builtin.copy:
+    src: "{{ cert_data.data.data.private_key }}"
+    dest: /etc/pki/tls/private/localhost.key
+    owner: root
+    group: root
+    mode: "0400"
+  notify: HTTPD_restart
+  when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
