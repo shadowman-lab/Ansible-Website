@@ -6,7 +6,7 @@
   community.hashi_vault.vault_pki_generate_certificate:
     role_name: shadowman-dev
     common_name: "{{ inventory_hostname }}"
-    ttl: 47d
+    ttl: "{{ hashi_pki_certificate_ttl }}"
     url: "{{ hashi_url }}"
     auth_method: approle
     role_id: "{{ hashi_role_id }}"
