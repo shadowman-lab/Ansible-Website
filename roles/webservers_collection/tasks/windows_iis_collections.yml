@@ -9,10 +9,8 @@
       timeout: 600
 
   rescue:
-    - name: Reset ssh connection to allow user changes to affect 'current login user'
-      ansible.builtin.meta: reset_connection
 
-    - name: Retry iis due to login issues
+    - name: Retry iis due to connection issues
       ansible.windows.win_feature:
         name: Web-Server
         state: present
