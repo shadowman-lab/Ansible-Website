@@ -6,6 +6,8 @@
         name: Web-Server
         state: present
       notify: IIS_running
+      timeout: 600
+
   rescue:
     - name: Retry iis due to WINRM issues
       ansible.windows.win_feature:
