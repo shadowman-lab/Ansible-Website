@@ -6,9 +6,13 @@
         name: Web-Server
         state: present
       notify: IIS_running
+      timeout: 600
 
   rescue:
-    - name: Retry iis due to WINRM issues
+    - name: Reset ssh connection to allow user changes to affect 'current login user'
+      ansible.builtin.meta: reset_connection
+
+    - name: Retry iis due to login issues
       ansible.windows.win_feature:
         name: Web-Server
         state: present
