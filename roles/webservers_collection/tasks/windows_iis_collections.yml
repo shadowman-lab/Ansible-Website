@@ -1,6 +1,16 @@
 ---
 - name: Install IIS
   block:
+    - name: Ensure no pending reboots block the installation
+      ansible.windows.win_reboot:
+      when: shadowman_provision_hypervisor | default('RHV') == "Azure"
+
+    - name: Reset Windows Installer Service
+      ansible.windows.win_service:
+        name: msiserver
+        state: restarted
+      when: shadowman_provision_hypervisor | default('RHV') == "Azure"
+
     - name: Install IIS
       ansible.windows.win_feature:
         name: Web-Server
