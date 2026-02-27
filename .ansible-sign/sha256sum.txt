@@ -1,4 +1,4 @@
-288dbf33043b21c3102c3b619198e135057cfdfb3b02bcdf5d3fdbc6a26ddf29  .code-workspace
+a69fa5052ef71185e65756848e933ee0668ab4b1cd6e07fa5011c809bd7dbaec  .code-workspace
 2996a4feb658555ddddc504dc5db4bf74a3d24c156ffc7a4b5b4b2a9e2958827  .config/ansible-lint.yml
 c82b1a7435aaef61820bb7998401b0bd9ad6241f28ff224e8bb7ccec1d71ef5d  .github/workflows/ansible-lint.yml
 3b565a854ef1b7dd4b074e776b11d2b34238c68a915801db5031908802748760  .vscode/extensions.json
