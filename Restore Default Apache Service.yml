@@ -1,0 +1,7 @@
+---
+- name: Restore Default Apache Service
+  hosts: "{{ vm_name | default('all') }}"
+  gather_facts: false
+
+  roles:
+    - deploy_default_apache_conf
