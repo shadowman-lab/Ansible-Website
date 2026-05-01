@@ -6,13 +6,14 @@
   hashicorp.vault.pki_certificate:
     role_name: shadowman-dev
     common_name: "{{ inventory_hostname }}"
-    ca_cert: "{{ lookup('ansible.builtin.env', 'VAULT_CACERT') }}"
     ttl: "{{ hashi_pki_certificate_ttl }}"
     url: "{{ hashi_url }}"
     auth_method: approle
     role_id: "{{ hashi_role_id }}"
     secret_id: "{{ hashi_secret_id }}"
   delegate_to: localhost
+  environment:
+    REQUESTS_CA_BUNDLE: "{{ lookup('ansible.builtin.env', 'VAULT_CACERT') }}"
   register: cert_data
   when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
 
