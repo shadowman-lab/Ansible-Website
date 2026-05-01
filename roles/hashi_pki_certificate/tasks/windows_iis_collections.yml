@@ -1,6 +1,6 @@
 ---
 - name: Generate a certificate with an approle login
-  community.hashi_vault.vault_pki_generate_certificate:
+  hashicorp.vault.pki_certificate:
     role_name: shadowman-dev
     common_name: "{{ inventory_hostname }}"
     ttl: "{{ hashi_pki_certificate_ttl }}"
@@ -8,7 +8,7 @@
     auth_method: approle
     role_id: "{{ hashi_role_id }}"
     secret_id: "{{ hashi_secret_id }}"
-    validate_certs: false
+    tls_skip_verify: true
   delegate_to: localhost
   register: cert_data
 
