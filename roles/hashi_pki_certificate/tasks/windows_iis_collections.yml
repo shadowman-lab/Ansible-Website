@@ -8,7 +8,6 @@
     auth_method: approle
     role_id: "{{ hashi_role_id }}"
     secret_id: "{{ hashi_secret_id }}"
-    tls_skip_verify: true
   delegate_to: localhost
   environment:
     REQUESTS_CA_BUNDLE: "{{ lookup('ansible.builtin.env', 'VAULT_CACERT') }}"
