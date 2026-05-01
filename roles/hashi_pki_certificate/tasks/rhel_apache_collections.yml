@@ -11,7 +11,7 @@
     auth_method: approle
     role_id: "{{ hashi_role_id }}"
     secret_id: "{{ hashi_secret_id }}"
-    tls_skip_verify: true
+    tls_skip_verify: false
   delegate_to: localhost
   register: cert_data
   when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
