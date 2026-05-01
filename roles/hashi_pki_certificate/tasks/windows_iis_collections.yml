@@ -20,8 +20,8 @@
     path: /tmp/{{ inventory_hostname }}.pfx
     friendly_name: ansiblewindows
     passphrase: "{{ windowspassword }}"
-    certificate_content: "{{ cert_data.data.data.certificate }}"
-    privatekey_content: "{{ cert_data.data.data.private_key }}"
+    certificate_content: "{{ cert_data.data.certificate }}"
+    privatekey_content: "{{ cert_data.data.private_key }}"
     state: present
   delegate_to: localhost
 
