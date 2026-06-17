@@ -36,14 +36,14 @@
         src: /tmp/{{ inventory_hostname }}.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
       notify: IIS_restart
-      when: iis_service_info.services[0].state == "started"
+      when: iis_service_info.services[0].state | default("stopped") == "started"
   rescue:
     - name: Retry Copy Cert due to WINRM issues
       ansible.windows.win_copy:
         src: /tmp/{{ inventory_hostname }}.pfx
         dest: C:\Inetpub\wwwroot\web_certificate.pfx
       notify: IIS_restart
-      when: iis_service_info.services[0].state == "started"
+      when: iis_service_info.services[0].state | default("stopped") == "started"
 
 - name: Install Cert
   block:
@@ -57,7 +57,7 @@
         key_storage: machine
       register: thumbprint
       notify: IIS_restart
-      when: iis_service_info.services[0].state == "started"
+      when: iis_service_info.services[0].state | default("stopped") == "started"
   rescue:
     - name: Install certificate twice due to WinRM
       ansible.windows.win_certificate_store:
@@ -69,7 +69,7 @@
         key_storage: machine
       register: thumbprint
       notify: IIS_restart
-      when: iis_service_info.services[0].state == "started"
+      when: iis_service_info.services[0].state | default("stopped") == "started"
 
 - name: Configure bindings
   block:
@@ -84,7 +84,7 @@
               certificate_hash: "{{ thumbprint.thumbprints[0] }}"
       notify: IIS_restart
       when:
-        - iis_service_info.services[0].state == "started"
+        - iis_service_info.services[0].state | default("stopped") == "started"
         - thumbprint.changed
 
   rescue:
@@ -99,5 +99,5 @@
               certificate_hash: "{{ thumbprint.thumbprints[0] }}"
       notify: IIS_restart
       when:
-        - iis_service_info.services[0].state == "started"
+        - iis_service_info.services[0].state | default("stopped") == "started"
         - thumbprint.changed
