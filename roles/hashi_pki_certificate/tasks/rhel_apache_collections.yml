@@ -8,9 +8,9 @@
     common_name: "{{ inventory_hostname }}"
     ttl: "{{ hashi_pki_certificate_ttl }}"
     url: "{{ hashi_url }}"
-    auth_method: token
-    token: "{{ hashi_token }}"
-    namespace: "root"
+    auth_method: approle
+    role_id: "{{ hashi_role_id }}"
+    secret_id: "{{ hashi_secret_id }}"
   delegate_to: localhost
   environment:
     REQUESTS_CA_BUNDLE: "{{ lookup('ansible.builtin.env', 'VAULT_CACERT') }}"
