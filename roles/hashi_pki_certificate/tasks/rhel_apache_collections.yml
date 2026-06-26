@@ -6,6 +6,7 @@
   hashicorp.vault.pki_certificate:
     role_name: shadowman-dev
     common_name: "{{ inventory_hostname }}"
+    namespace: ""
     ttl: "{{ hashi_pki_certificate_ttl }}"
     url: "{{ hashi_url }}"
     auth_method: approle
