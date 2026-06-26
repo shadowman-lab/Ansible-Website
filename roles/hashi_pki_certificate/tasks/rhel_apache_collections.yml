@@ -4,7 +4,7 @@
 
 - name: Generate a certificate with an approle login
   hashicorp.vault.pki_certificate:
-    role_name: shadowman-dev
+    role_name: pki-client
     common_name: "{{ inventory_hostname }}"
     namespace: root
     ttl: "{{ hashi_pki_certificate_ttl }}"
