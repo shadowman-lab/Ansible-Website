@@ -2,11 +2,16 @@
 - name: Populate service facts
   ansible.builtin.service_facts:
 
+- name: Audit credential string lengths safely
+  ansible.builtin.debug:
+    msg:
+      - "Role ID character length: {{ hashi_role_id | default('') | length }}"
+      - "Secret ID character length: {{ hashi_secret_id | default('') | length }}"
+
 - name: Generate a certificate with an approle login
   hashicorp.vault.pki_certificate:
     role_name: shadowman-dev
     common_name: "{{ inventory_hostname }}"
-    namespace: ""
     ttl: "{{ hashi_pki_certificate_ttl }}"
     url: "{{ hashi_url }}"
     auth_method: approle
