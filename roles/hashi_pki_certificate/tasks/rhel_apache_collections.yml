@@ -9,7 +9,7 @@
     ttl: "{{ hashi_pki_certificate_ttl }}"
     url: "{{ hashi_url }}"
     auth_method: token
-    token: "{{ hashi_token }}
+    token: "{{ hashi_token }}"
     namespace: "root"
   delegate_to: localhost
   environment:
