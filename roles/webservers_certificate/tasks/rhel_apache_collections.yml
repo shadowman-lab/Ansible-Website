@@ -2,7 +2,7 @@
 - name: Populate service facts
   ansible.builtin.service_facts:
 
-- name: Copy Cert
+- name: Copy Cert for HTTPD
   ansible.builtin.copy:
     src: /certs/shadowman_cert.cer
     dest: /etc/pki/tls/certs/localhost.crt
@@ -12,7 +12,7 @@
   notify: HTTPD_restart
   when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
 
-- name: Copy Key
+- name: Copy Key for HTTPD
   ansible.builtin.copy:
     src: /certs/shadowman_private.key
     dest: /etc/pki/tls/private/localhost.key
@@ -21,3 +21,83 @@
     mode: "0400"
   notify: HTTPD_restart
   when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
+
+- name: Copy Cert for Grafana
+  ansible.builtin.copy:
+    src: /certs/shadowman_cert.cer
+    dest: /etc/grafana/shadowman_cert.cer
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Grafana_restart
+  when: ansible_facts['services']['grafana-server.service']['state'] | default('not-found') == "running"
+
+- name: Copy Key for Grafana
+  ansible.builtin.copy:
+    src: /certs/shadowman_private.key
+    dest: /etc/grafana/shadowman_private.key
+    owner: root
+    group: root
+    mode: "0400"
+  notify: Grafana_restart
+  when: ansible_facts['services']['grafana-server.service']['state'] | default('not-found') == "running"
+
+- name: Copy Cert for Prometheus and Alertmanager
+  ansible.builtin.copy:
+    src: /certs/shadowman_cert.cer
+    dest: /certs/shadowman_cert.cer
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Prometheus_restart
+  when: ansible_facts['services']['prometheus.service']['state'] | default('not-found') == "running"
+
+- name: Copy Key for Prometheus and Alertmanager
+  ansible.builtin.copy:
+    src: /certs/shadowman_private.key
+    dest: /certs/shadowman_private.key
+    owner: root
+    group: root
+    mode: "0400"
+  notify: Prometheus_restart
+  when: ansible_facts['services']['prometheus.service']['state'] | default('not-found') == "running"
+
+- name: Copy Cert for Splunk
+  ansible.builtin.copy:
+    src: /certs/shadowman_cert.cer
+    dest: /certs/shadowman_cert.cer
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Splunk_restart
+  when: ansible_facts['services']['Splunkd.service']['state'] | default('not-found') == "running"
+
+- name: Copy Key for Splunk
+  ansible.builtin.copy:
+    src: /certs/shadowman_private.key
+    dest: /certs/shadowman_private.key
+    owner: root
+    group: root
+    mode: "0400"
+  notify: Splunk_restart
+  when: ansible_facts['services']['Splunkd.service']['state'] | default('not-found') == "running"
+
+- name: Copy Cert for Kibana
+  ansible.builtin.copy:
+    src: /certs/shadowman_cert.cer
+    dest: /certs/shadowman_cert.cer
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Kibana_restart
+  when: ansible_facts['services']['kibana.service']['state'] | default('not-found') == "running"
+
+- name: Copy Key for Kibana
+  ansible.builtin.copy:
+    src: /certs/shadowman_private.key
+    dest: /certs/shadowman_private.key
+    owner: root
+    group: root
+    mode: "0400"
+  notify: Kibana_restart
+  when: ansible_facts['services']['kibana.service']['state'] | default('not-found') == "running"
