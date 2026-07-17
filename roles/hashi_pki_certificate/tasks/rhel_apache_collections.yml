@@ -17,7 +17,7 @@
   register: cert_data
   when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running" or ansible_facts['services']['grafana-server.service']['state'] | default('not-found') == "running" or ansible_facts['services']['prometheus.service']['state'] | default('not-found') == "running" or ansible_facts['services']['Splunkd.service']['state'] | default('not-found') == "running" or ansible_facts['services']['kibana.service']['state'] | default('not-found') == "running"
 
-- name: Deploy Cert
+- name: Deploy Cert for HTTPD
   ansible.builtin.copy:
     content: "{{ cert_data.data.certificate }}"
     dest: /etc/pki/tls/certs/localhost.crt
@@ -27,7 +27,7 @@
   notify: HTTPD_restart
   when: ansible_facts['services']['httpd.service']['state'] | default('not-found') == "running"
 
-- name: Deploy Key
+- name: Deploy Key for HTTPD
   ansible.builtin.copy:
     content: "{{ cert_data.data.private_key }}"
     dest: /etc/pki/tls/private/localhost.key
@@ -39,7 +39,7 @@
 
 - name: Copy Cert for Grafana
   ansible.builtin.copy:
-    src: "{{ cert_data.data.certificate }}"
+    content: "{{ cert_data.data.certificate }}"
     dest: /etc/grafana/shadowman_cert.cer
     owner: root
     group: root
@@ -49,7 +49,7 @@
 
 - name: Copy Key for Grafana
   ansible.builtin.copy:
-    src: "{{ cert_data.data.private_key }}"
+    content: "{{ cert_data.data.private_key }}"
     dest: /etc/grafana/shadowman_private.key
     owner: root
     group: root
@@ -59,7 +59,7 @@
 
 - name: Copy Cert for Prometheus and Alertmanager
   ansible.builtin.copy:
-    src: "{{ cert_data.data.certificate }}"
+    content: "{{ cert_data.data.certificate }}"
     dest: /certs/shadowman_cert.cer
     owner: root
     group: root
@@ -69,7 +69,7 @@
 
 - name: Copy Key for Prometheus and Alertmanager
   ansible.builtin.copy:
-    src: "{{ cert_data.data.private_key }}"
+    content: "{{ cert_data.data.private_key }}"
     dest: /certs/shadowman_private.key
     owner: root
     group: root
@@ -79,7 +79,7 @@
 
 - name: Copy Cert for Splunk
   ansible.builtin.copy:
-    src: "{{ cert_data.data.certificate }}"
+    content: "{{ cert_data.data.certificate }}"
     dest: /certs/shadowman_cert.cer
     owner: root
     group: root
@@ -89,7 +89,7 @@
 
 - name: Copy Key for Splunk
   ansible.builtin.copy:
-    src: "{{ cert_data.data.private_key }}"
+    content: "{{ cert_data.data.private_key }}"
     dest: /certs/shadowman_private.key
     owner: root
     group: root
@@ -99,7 +99,7 @@
 
 - name: Copy Cert for Kibana
   ansible.builtin.copy:
-    src: "{{ cert_data.data.certificate }}"
+    content: "{{ cert_data.data.certificate }}"
     dest: /certs/shadowman_cert.cer
     owner: root
     group: root
@@ -109,7 +109,7 @@
 
 - name: Copy Key for Kibana
   ansible.builtin.copy:
-    src: "{{ cert_data.data.private_key }}"
+    content: "{{ cert_data.data.private_key }}"
     dest: /certs/shadowman_private.key
     owner: root
     group: root
