@@ -38,7 +38,7 @@
     dest: /etc/grafana/shadowman_private.key
     owner: root
     group: root
-    mode: "0400"
+    mode: "0644"
   notify: Grafana_restart
   when: ansible_facts['services']['grafana-server.service']['state'] | default('not-found') == "running"
 
@@ -98,6 +98,6 @@
     dest: /certs/shadowman_private.key
     owner: root
     group: root
-    mode: "0400"
+    mode: "0644"
   notify: Kibana_restart
   when: ansible_facts['services']['kibana.service']['state'] | default('not-found') == "running"
