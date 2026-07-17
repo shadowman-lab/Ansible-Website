@@ -17,6 +17,12 @@
     state: restarted
     enabled: true
 
+- name: Alertmanager_restart
+  ansible.builtin.service:
+    name: alertmanager
+    state: restarted
+    enabled: true
+
 - name: Splunk_restart
   ansible.builtin.service:
     name: Splunkd

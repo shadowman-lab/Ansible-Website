@@ -64,7 +64,9 @@
     owner: root
     group: root
     mode: "0644"
-  notify: Prometheus_restart
+  notify:
+    - Prometheus_restart
+    - Alertmanager_restart
   when: ansible_facts['services']['prometheus.service']['state'] | default('not-found') == "running"
 
 - name: Copy Key for Prometheus and Alertmanager
@@ -74,7 +76,9 @@
     owner: root
     group: root
     mode: "0400"
-  notify: Prometheus_restart
+  notify:
+    - Prometheus_restart
+    - Alertmanager_restart
   when: ansible_facts['services']['prometheus.service']['state'] | default('not-found') == "running"
 
 - name: Copy Cert for Splunk
