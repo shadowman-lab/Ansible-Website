@@ -1,0 +1,10 @@
+---
+- name: Test Group vars in AAP
+  hosts: all
+  gather_facts: false
+
+  tasks:
+
+    - name: Display the httpd_version variable
+      ansible.builtin.debug:
+        msg: "The httpd_version is {{ httpd_version | default('not defined') }}"
