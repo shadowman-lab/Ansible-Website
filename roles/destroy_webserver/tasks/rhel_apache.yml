@@ -1,0 +1,14 @@
+---
+- name: Find all files and directories in /var/www/html
+  ansible.builtin.find:
+    paths: /var/www/html/
+    file_type: any
+  register: web_content
+
+- name: Delete all found items
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ web_content.files }}"
+  loop_control:
+    label: "{{ item.path }}"

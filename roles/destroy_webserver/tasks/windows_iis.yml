@@ -1,0 +1,16 @@
+---
+- name: Find all files in IIS wwwroot
+  ansible.windows.win_find:
+    paths: C:\Inetpub\wwwroot\
+    file_type: file
+    hidden: true
+    recurse: true
+  register: iis_content
+
+- name: Delete all found files
+  ansible.windows.win_file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ iis_content.files }}"
+  loop_control:
+    label: "{{ item.path }}"

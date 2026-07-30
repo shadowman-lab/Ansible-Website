@@ -1,0 +1,8 @@
+---
+- name: Destroy webserver RHEL
+  ansible.builtin.include_tasks: rhel_apache.yml
+  when: os is match("rhel.*") or os == "Red Hat BYOL Linux"
+
+- name: Destroy webserver Windows
+  ansible.builtin.include_tasks: windows_iis.yml
+  when: os is match("windows.*") or os is match("2016.*") or os == "Windows"

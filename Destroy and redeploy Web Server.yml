@@ -1,0 +1,27 @@
+---
+- name: Destroy and redeploy web server
+  hosts: "{{ vm_name | default('all') }}"
+  gather_facts: false
+
+  roles:
+    - destroy_webserver
+    - webservers_collection
+
+  post_tasks:
+    - name: Check that you can connect to the index page and that the hostname is in the contents
+      ansible.builtin.uri:
+        url: https://{{ ansible_host }}
+        validate_certs: false
+        return_content: true
+      register: this
+      failed_when: inventory_hostname not in this.content
+      when: os is match("rhel.*") or os == "Red Hat BYOL Linux"
+
+    - name: Check that you can connect to the index page and that the hostname is in the contents
+      ansible.windows.win_uri:
+        url: https://{{ ansible_host }}
+        validate_certs: false
+        return_content: true
+      register: this
+      failed_when: inventory_hostname not in this.content
+      when: os is match("windows.*") or os is match("2016.*") or os == "Windows"
