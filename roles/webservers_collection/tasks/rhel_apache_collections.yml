@@ -4,6 +4,19 @@
     name: firewalld
     state: present
 
+- name: Get running kernel version when running on Azure
+  ansible.builtin.command: uname -r
+  register: kernel_version
+  changed_when: false
+  when: shadowman_provision_hypervisor | default('VMWare') == "Azure"
+
+- name: Ensure kernel-modules-extra is installed when running on Azure
+  ansible.builtin.dnf:
+    name: "kernel-modules-extra-{{ kernel_version.stdout }}"
+    state: present
+  notify: Restart_firewalld
+  when: shadowman_provision_hypervisor | default('VMWare') == "Azure"
+
 - name: Open Firewalld for apache
   ansible.posix.firewalld:
     service: http
